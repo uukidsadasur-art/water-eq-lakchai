@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ติดตามสถานการณ์ระดับน้ำบ่อ EQ นิคมหลักชัยเมืองยาง</title>
+  <!-- Google Fonts: Prompt & Sarabun -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js & Datalabels Plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            prompt: ['Prompt', 'sans-serif'],
+            sarabun: ['Sarabun', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      background-color: #071326; /* Deep midnight navy canvas */
+      color: #ffffff;
+    }
+    /* Navy / Blue Themes for all blocks */
+    .navy-block {
+      background: linear-gradient(145deg, #0a2547 0%, #0d2f57 100%);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+    .navy-block-darker {
+      background: linear-gradient(145deg, #071e3b 0%, #0a284e 100%);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .kpi-navy-1 {
+      background: linear-gradient(135deg, #092a54 0%, #0f3d73 100%);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .kpi-navy-2 {
+      background: linear-gradient(135deg, #063559 0%, #0c4d7e 100%);
+      border: 1px solid rgba(52, 211, 153, 0.35);
+    }
+    .kpi-navy-3 {
+      background: linear-gradient(135deg, #073852 0%, #0c5274 100%);
+      border: 1px solid rgba(45, 212, 191, 0.35);
+    }
+    .kpi-navy-4 {
+      background: linear-gradient(135deg, #13275c 0%, #1c3b87 100%);
+      border: 1px solid rgba(165, 180, 252, 0.35);
+    }
+    .wave-pattern {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1.5px, transparent 1.5px);
+      background-size: 14px 14px;
+    }
+    .kpi-card {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .kpi-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.5);
+      border-color: rgba(56, 189, 248, 0.5);
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #071326;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e3a8a;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #0284c7;
+    }
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background: #0a2547 !important;
+        color: white !important;
+      }
+      .page-container {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased">
+
+  <!-- ================= AUTH MODAL (Password: UU@12345) ================= -->
+  <div id="authModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-md transition-all duration-300">
+    <div class="navy-block rounded-3xl shadow-2xl max-w-md w-full mx-4 overflow-hidden border border-sky-500/30 animate-in fade-in zoom-in duration-200">
+      <div class="p-7 text-center relative border-b border-sky-500/20 wave-pattern">
+        <div class="w-16 h-16 mx-auto mb-3 bg-sky-950/80 rounded-2xl flex items-center justify-center shadow-inner border border-sky-400/40 p-3">
+          <i class="fa-solid fa-droplet text-cyan-300 text-3xl"></i>
+        </div>
+        <h2 class="text-xl font-bold tracking-tight text-white">เข้าสู่ระบบ Dashboard</h2>
+        <p class="text-xs text-sky-200 font-medium mt-1">โครงการระบบบำบัดน้ำเสียนิคมหลักชัยเมืองยาง</p>
+      </div>
+
+      <form id="loginForm" class="p-6 sm:p-7 space-y-4" onsubmit="handleLogin(event)">
+        <div>
+          <label class="block text-xs font-semibold text-sky-100 mb-1.5">รหัสผ่านเพื่อเข้าใช้งาน</label>
+          <div class="relative">
+            <input type="password" id="passwordInput" placeholder="กรอกรหัสผ่าน (UU@12345)" required
+              class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-sky-500/40 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 text-sm font-sans tracking-wide text-white placeholder-slate-400">
+            <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 top-3 text-sky-300 hover:text-white">
+              <i id="eyeIcon" class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+          <p id="authError" class="text-rose-400 text-xs mt-2 hidden flex items-center gap-1.5 font-medium">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span>รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง</span>
+          </p>
+        </div>
+
+        <button type="submit" class="w-full py-3 px-4 bg-sky-600 hover:bg-sky-500 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all text-sm flex items-center justify-center gap-2 border border-sky-400/40">
+          <i class="fa-solid fa-lock-open text-xs"></i>
+          <span>เข้าสู่ระบบ Dashboard</span>
+        </button>
+
+        <div class="flex items-center justify-between text-[11px] text-sky-200/70 pt-3 border-t border-sky-500/20">
+          <span>ติดตามระดับน้ำบ่อ EQ แบบ Real-time</span>
+          <span class="font-mono font-medium text-sky-300">รหัสผ่าน: UU@12345</span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MAIN APP ================= -->
+  <div id="mainContent" class="hidden min-h-screen flex flex-col">
+
+    <!-- Top Live Control Bar (Navy Theme) -->
+    <div class="bg-[#051326] text-sky-200 text-xs px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 border-b border-sky-500/20 no-print">
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-medium">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          เชื่อมต่อ Google Sheet Real-time (00:00 - 23:00)
+        </span>
+        <span class="text-sky-500 hidden sm:inline">|</span>
+        <span id="lastUpdatedText" class="text-sky-100 font-medium">อัปเดตล่าสุด: กำลังโหลด...</span>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <div class="flex items-center gap-1.5 text-sky-200">
+          <i class="fa-solid fa-rotate text-xs"></i>
+          <span class="hidden md:inline">รอบอัปเดต:</span>
+          <select id="refreshIntervalSelect" onchange="changeRefreshInterval(this.value)" class="bg-[#0a2547] text-white border border-sky-500/40 rounded-lg px-2.5 py-1 focus:outline-none text-xs">
+            <option value="15000">15 วินาที</option>
+            <option value="30000" selected>30 วินาที</option>
+            <option value="60000">1 นาที</option>
+            <option value="300000">5 นาที</option>
+            <option value="0">ปิดออโต้</option>
+          </select>
+        </div>
+
+        <button onclick="fetchSheetData(true)" title="รีเฟรชข้อมูลใหม่ทันที" class="px-3 py-1 bg-[#0f3460] hover:bg-sky-600 text-white rounded-lg border border-sky-500/40 transition flex items-center gap-1.5 font-medium shadow-sm">
+          <i id="refreshSpinner" class="fa-solid fa-arrows-rotate"></i>
+          <span class="hidden sm:inline">รีเฟรช</span>
+        </button>
+
+        <a href="https://docs.google.com/spreadsheets/d/1CVnXQY94Vl-jb3ppmoUgEcz4xNlohw9lQQ_anq1wEH4/edit?usp=sharing" target="_blank" title="เปิด Google Sheet ต้นทาง" class="px-3 py-1 bg-emerald-700 hover:bg-emerald-600 text-white rounded-lg border border-emerald-500/50 transition flex items-center gap-1.5 font-medium shadow-sm">
+          <i class="fa-solid fa-file-excel"></i>
+          <span class="hidden sm:inline">ไปที่ Sheet</span>
+        </a>
+
+        <button onclick="window.print()" title="พิมพ์หรือบันทึก PDF" class="px-3 py-1 bg-[#0f3460] hover:bg-sky-600 text-white rounded-lg border border-sky-500/40 transition flex items-center gap-1.5 font-medium">
+          <i class="fa-solid fa-print"></i>
+          <span class="hidden sm:inline">พิมพ์</span>
+        </button>
+
+        <button onclick="logout()" title="ออกจากระบบ" class="px-2.5 py-1 bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 rounded-lg border border-rose-500/40 transition flex items-center gap-1 font-medium">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span class="hidden sm:inline">ออก</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="page-container max-w-[1440px] w-full mx-auto p-4 sm:p-6 lg:p-7 flex-1 space-y-5">
+
+      <!-- ================= HEADER BANNER (Navy Blue Block with Crisp White Text) ================= -->
+      <header class="navy-block rounded-2xl shadow-xl overflow-hidden text-white relative wave-pattern">
+        <div class="p-5 sm:p-7 flex flex-col lg:flex-row lg:items-center justify-between gap-5 relative z-10">
+          
+          <!-- Logo & Title Section -->
+          <div class="flex items-center gap-4 sm:gap-5">
+            <div class="relative w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 flex items-center justify-center">
+              <div class="absolute inset-0 bg-sky-950/70 rounded-2xl border border-sky-400/40 shadow-inner"></div>
+              <div class="relative flex items-center justify-center">
+                <i class="fa-solid fa-droplet text-cyan-400 text-3xl sm:text-4xl drop-shadow"></i>
+                <i class="fa-solid fa-leaf text-emerald-400 text-lg absolute -bottom-1 -right-1 drop-shadow"></i>
+              </div>
+            </div>
+
+            <div>
+              <h1 class="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-white drop-shadow">
+                โครงการระบบบำบัดน้ำเสียนิคมหลักชัยเมืองยาง
+              </h1>
+              <p class="text-sky-200 text-xs sm:text-sm font-medium mt-1 flex flex-wrap items-center gap-2">
+                <span>เดินหน้าสู่สิ่งแวดล้อมที่ยั่งยืน</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 hidden sm:inline-block"></span>
+                <span>บริหารจัดการน้ำเสีย เพื่อชุมชนและอนาคต</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Date Badge Card (Navy with White Text) -->
+          <div class="bg-[#061b36]/90 border border-sky-400/40 rounded-xl px-4 py-2.5 sm:px-5 sm:py-3 flex items-center gap-3 shadow-md self-start lg:self-auto">
+            <div class="w-10 h-10 rounded-lg bg-sky-600 text-white flex items-center justify-center text-xl shadow-sm">
+              <i class="fa-regular fa-calendar-days"></i>
+            </div>
+            <div>
+              <span class="text-[11px] uppercase tracking-wider text-sky-200 block font-bold">วันที่</span>
+              <span id="headerDateDisplay" class="text-sm sm:text-base font-extrabold text-white tracking-wide">26 กันยายน 2569</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Glowing bottom line -->
+        <div class="h-1.5 w-full bg-gradient-to-r from-cyan-400 via-sky-500 to-blue-600"></div>
+      </header>
+
+      <!-- ================= 4 KPI SUMMARY CARDS (Navy Blue with Pure White Text) ================= -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-white">
+        
+        <!-- KPI 1: ระดับบ่อ EQ ล่าสุด (Navy Card 1) -->
+        <div class="kpi-card kpi-navy-1 rounded-2xl p-5 shadow-lg relative overflow-hidden flex flex-col justify-between wave-pattern">
+          <div class="flex items-start justify-between">
+            <div>
+              <span class="text-xs font-semibold text-sky-200 block">ระดับบ่อ EQ ล่าสุด</span>
+              <div class="flex items-baseline gap-1 mt-1">
+                <span id="kpiLatestVal" class="text-3xl sm:text-4xl font-extrabold text-white font-sans tracking-tight">87.74%</span>
+              </div>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-sky-950/70 text-cyan-300 flex items-center justify-center text-2xl shadow-inner border border-sky-400/40">
+              <i class="fa-solid fa-water"></i>
+            </div>
+          </div>
+          <div class="mt-4 pt-2.5 border-t border-sky-500/25 flex items-center justify-between text-xs">
+            <span id="kpiLatestTimeBadge" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-sky-950/90 text-cyan-300 font-bold border border-sky-400/30">
+              (เวลา 08:00 น.)
+            </span>
+            <span class="text-sky-200 font-medium text-[11px]">สถานะปกติ</span>
+          </div>
+        </div>
+
+        <!-- KPI 2: การเปลี่ยนแปลง (Navy Card 2) -->
+        <div class="kpi-card kpi-navy-2 rounded-2xl p-5 shadow-lg relative overflow-hidden flex flex-col justify-between wave-pattern">
+          <div class="flex items-start justify-between">
+            <div>
+              <span id="kpiChangeLabel" class="text-xs font-semibold text-emerald-200 block">ลดลงจากเวลา 03:00 น.</span>
+              <div class="flex items-baseline gap-2 mt-1">
+                <span id="kpiChangeVal" class="text-3xl sm:text-4xl font-extrabold text-white font-sans tracking-tight">1.56</span>
+                <span id="kpiChangeArrow" class="text-2xl text-emerald-400">
+                  <i class="fa-solid fa-arrow-down"></i>
+                </span>
+              </div>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-emerald-950/70 text-emerald-300 flex items-center justify-center text-xl shadow-inner border border-emerald-400/40">
+              <i class="fa-solid fa-chart-line"></i>
+            </div>
+          </div>
+          <div class="mt-4 pt-2.5 border-t border-emerald-500/25 flex items-center justify-between text-xs">
+            <span id="kpiChangeUnitBadge" class="text-white font-semibold">จุดเปอร์เซ็นต์</span>
+            <span id="kpiChangeTag" class="text-emerald-300 font-bold bg-emerald-950/90 px-2 py-0.5 rounded border border-emerald-400/30">แนวโน้มลดลง</span>
+          </div>
+        </div>
+
+        <!-- KPI 3: ช่วงเวลาติดตาม (Navy Card 3) -->
+        <div class="kpi-card kpi-navy-3 rounded-2xl p-5 shadow-lg relative overflow-hidden flex flex-col justify-between wave-pattern">
+          <div class="flex items-start justify-between">
+            <div>
+              <span class="text-xs font-semibold text-teal-200 block">ช่วงเวลาติดตาม</span>
+              <div class="flex items-baseline gap-1 mt-1">
+                <span id="kpiPeriodVal" class="text-2xl sm:text-3xl font-extrabold text-white font-sans tracking-tight">00:00 - 23:00 น.</span>
+              </div>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-teal-950/70 text-teal-300 flex items-center justify-center text-xl shadow-inner border border-teal-400/40">
+              <i class="fa-regular fa-clock"></i>
+            </div>
+          </div>
+          <div class="mt-4 pt-2.5 border-t border-teal-500/25 flex items-center justify-between text-xs">
+            <span id="kpiHoursVal" class="text-white font-bold">(24 ชั่วโมง)</span>
+            <span id="kpiPointsCount" class="text-teal-200 font-medium text-[11px]">บันทึก 6 จุด</span>
+          </div>
+        </div>
+
+        <!-- KPI 4: อัตราการเปลี่ยนแปลงเฉลี่ย (Navy Card 4) -->
+        <div class="kpi-card kpi-navy-4 rounded-2xl p-5 shadow-lg relative overflow-hidden flex flex-col justify-between wave-pattern">
+          <div class="flex items-start justify-between">
+            <div>
+              <span id="kpiRateLabel" class="text-xs font-semibold text-indigo-200 block">อัตราการลดลงเฉลี่ย</span>
+              <div class="flex items-baseline gap-1 mt-1">
+                <span id="kpiRateVal" class="text-3xl sm:text-4xl font-extrabold text-white font-sans tracking-tight">0.39</span>
+              </div>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-indigo-950/70 text-indigo-300 flex items-center justify-center text-xl shadow-inner border border-indigo-400/40">
+              <i class="fa-solid fa-chart-column"></i>
+            </div>
+          </div>
+          <div class="mt-4 pt-2.5 border-t border-indigo-500/25 flex items-center justify-between text-xs">
+            <span id="kpiRateUnitBadge" class="text-white font-semibold">จุดเปอร์เซ็นต์/ชั่วโมง</span>
+            <span class="text-indigo-200 font-medium text-[11px]">สม่ำเสมอ</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= CONTROLS & FILTER BAR (Navy Blue Block with White Text) ================= -->
+      <section class="navy-block rounded-2xl shadow-lg p-4 sm:p-5 no-print text-white">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+          
+          <!-- Date Dropdown (Requirement 4) -->
+          <div class="md:col-span-3">
+            <label class="block text-xs font-bold text-white mb-1.5 flex items-center gap-1.5">
+              <i class="fa-regular fa-calendar text-cyan-400"></i>
+              <span>เลือกวันที่:</span>
+            </label>
+            <select id="dateSelect" onchange="onDateChanged()" class="w-full bg-[#071d37] border border-sky-500/40 text-white text-sm rounded-xl px-3 py-2 font-medium focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition">
+              <option value="">กำลังโหลดวันที่...</option>
+            </select>
+          </div>
+
+          <!-- Time Range Dropdown / Selector (00:00 ถึง 23:00) -->
+          <div class="md:col-span-4">
+            <label class="block text-xs font-bold text-white mb-1.5 flex items-center gap-1.5">
+              <i class="fa-regular fa-clock text-cyan-400"></i>
+              <span>เลือกช่วงเวลา (00:00 - 23:00 น.):</span>
+            </label>
+            <div class="flex items-center gap-2">
+              <select id="startTimeSelect" onchange="onTimeRangeChanged()" class="w-full bg-[#071d37] border border-sky-500/40 text-white text-xs sm:text-sm rounded-xl px-2.5 py-2 font-medium focus:ring-2 focus:ring-cyan-400">
+                <option value="all">ตั้งแต่ต้น (00:00)</option>
+              </select>
+              <span class="text-sky-300 font-bold text-xs">ถึง</span>
+              <select id="endTimeSelect" onchange="onTimeRangeChanged()" class="w-full bg-[#071d37] border border-sky-500/40 text-white text-xs sm:text-sm rounded-xl px-2.5 py-2 font-medium focus:ring-2 focus:ring-cyan-400">
+                <option value="all">เวลาล่าสุด (23:00)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Metric Selector: % vs m (Requirement 2) -->
+          <div class="md:col-span-3">
+            <label class="block text-xs font-bold text-white mb-1.5 flex items-center gap-1.5">
+              <i class="fa-solid fa-ruler-vertical text-cyan-400"></i>
+              <span>หน่วยแสดงผล (ค่าที่บันทึก):</span>
+            </label>
+            <div class="grid grid-cols-2 gap-1.5 bg-[#071a33] p-1 rounded-xl border border-sky-500/30">
+              <button id="btnUnitPercent" onclick="setMetricUnit('percent')" class="py-1.5 text-xs font-bold rounded-lg transition shadow-sm bg-sky-600 text-white">
+                ระดับความสูง %
+              </button>
+              <button id="btnUnitMeter" onclick="setMetricUnit('meter')" class="py-1.5 text-xs font-bold rounded-lg transition text-sky-200 hover:text-white">
+                ระดับความสูง m
+              </button>
+            </div>
+          </div>
+
+          <!-- Reset Filter Button -->
+          <div class="md:col-span-2 flex flex-col justify-end">
+            <label class="block text-xs font-bold text-transparent mb-1.5 opacity-0 md:opacity-100">
+              <span>รีเซ็ต:</span>
+            </label>
+            <button onclick="resetFiltersToActiveData()" class="w-full py-2 px-3 bg-[#0f3460] hover:bg-sky-600 text-white text-xs font-bold rounded-xl border border-sky-400/40 transition flex items-center justify-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-arrows-rotate text-cyan-300"></i>
+              <span>ช่วงที่มีข้อมูลจริง</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Quick 24H Shift Chips -->
+        <div class="mt-3 pt-3 border-t border-sky-500/20 flex flex-wrap items-center gap-2 text-xs">
+          <span class="text-sky-200 font-semibold">ตัวเลือกช่วงเวลาด่วน:</span>
+          <button onclick="setShiftRange('all', 'all')" class="px-2.5 py-1 bg-[#0c2a4d] hover:bg-sky-600 text-white rounded-lg border border-sky-500/40 transition font-medium">
+            🕒 ทั้งวัน 24 ชม. (00:00 - 23:00)
+          </button>
+          <button onclick="setShiftRange('00:00', '08:00')" class="px-2.5 py-1 bg-[#0c2a4d] hover:bg-sky-600 text-white rounded-lg border border-sky-500/40 transition font-medium">
+            🌙 กะดึก (00:00 - 08:00)
+          </button>
+          <button onclick="setShiftRange('08:00', '16:00')" class="px-2.5 py-1 bg-[#0c2a4d] hover:bg-sky-600 text-white rounded-lg border border-sky-500/40 transition font-medium">
+            ☀️ กะเช้า (08:00 - 16:00)
+          </button>
+          <button onclick="setShiftRange('16:00', '23:00')" class="px-2.5 py-1 bg-[#0c2a4d] hover:bg-sky-600 text-white rounded-lg border border-sky-500/40 transition font-medium">
+            ⛅ กะบ่าย (16:00 - 23:00)
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= MAIN SECTION: CHART & SUMMARY (Navy Blue with Pure White Text) ================= -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+        <!-- LEFT: Interactive Trend Line Chart (Navy Block) -->
+        <div class="lg:col-span-8 navy-block rounded-2xl p-5 sm:p-6 shadow-xl flex flex-col justify-between text-white">
+          <div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-sky-500/20">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-sky-950 text-cyan-300 flex items-center justify-center text-lg border border-sky-400/40 shadow-inner">
+                  <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div>
+                  <h3 id="chartTitle" class="text-lg sm:text-xl font-bold text-white tracking-wide">
+                    แนวโน้มระดับบ่อ EQ วันที่ 26 กันยายน 2569
+                  </h3>
+                  <p class="text-xs text-sky-200">กราฟเส้นแสดงระดับความสูงตามเวลาที่บันทึก (00:00 - 23:00 น.)</p>
+                </div>
+              </div>
+
+              <!-- Legend and Switch view -->
+              <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2 text-xs font-bold text-white bg-sky-950/80 px-3.5 py-1.5 rounded-full border border-sky-400/40">
+                  <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block shadow-sm"></span>
+                  <span id="legendText">ระดับบ่อ EQ</span>
+                </div>
+                <button onclick="toggleDataTable()" class="text-xs px-3 py-1.5 text-white hover:text-cyan-200 bg-[#0c2a4d] hover:bg-sky-600 border border-sky-500/40 rounded-xl transition no-print font-bold shadow-sm">
+                  <i class="fa-solid fa-table-list mr-1"></i>
+                  <span>ดูตารางตัวเลข</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Chart Canvas Container -->
+            <div class="relative w-full mt-4 h-[380px] sm:h-[430px]">
+              <canvas id="eqLevelChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Bottom Chart Note -->
+          <div class="mt-4 pt-3 border-t border-sky-500/20 flex flex-wrap items-center justify-between text-xs text-sky-200 gap-2">
+            <span class="flex items-center gap-1.5">
+              <i class="fa-solid fa-circle-check text-emerald-400"></i>
+              <span class="text-white font-medium">ข้อมูลเชื่อมต่อแบบ Real-time จาก Google Sheet โดยอัตโนมัติ</span>
+            </span>
+            <span id="chartMinMaxSummary" class="font-bold text-white">สูงสุด: - | ต่ำสุด: -</span>
+          </div>
+
+          <!-- Collapsible Raw Data Table (Navy Theme) -->
+          <div id="dataTableContainer" class="hidden mt-4 pt-4 border-t border-sky-500/30 overflow-x-auto">
+            <h4 class="text-sm font-bold text-white mb-2">ตารางบันทึกรายชั่วโมงประจำวัน (00:00 - 23:00 น.)</h4>
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-[#071e3b] text-sky-200 font-bold border border-sky-500/30">
+                  <th class="p-2.5 border border-sky-500/20">เวลา</th>
+                  <th class="p-2.5 border border-sky-500/20">ระดับความสูง %</th>
+                  <th class="p-2.5 border border-sky-500/20">ระดับความสูง m</th>
+                  <th class="p-2.5 border border-sky-500/20">สถานะบันทึก</th>
+                </tr>
+              </thead>
+              <tbody id="dataTableBody">
+                <!-- Dynamically filled -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- RIGHT: Summary & Operational Actions (Navy Blocks with Pure White Text) -->
+        <div class="lg:col-span-4 space-y-5 flex flex-col text-white">
+
+          <!-- Card 1: สรุปภาพรวม (Navy Block) -->
+          <div class="navy-block rounded-2xl p-5 sm:p-6 shadow-xl relative overflow-hidden">
+            <div class="flex items-center gap-3 pb-3 border-b border-sky-500/20">
+              <div class="w-9 h-9 rounded-xl bg-sky-950 text-cyan-300 flex items-center justify-center text-lg border border-sky-400/40">
+                <i class="fa-solid fa-bullseye"></i>
+              </div>
+              <h3 class="text-lg font-bold text-white">สรุปภาพรวม</h3>
+            </div>
+
+            <div class="mt-4 space-y-4">
+              <!-- Headline Dynamic in Navy Card -->
+              <div class="bg-[#061b36] rounded-2xl p-4 border border-sky-400/30 text-center shadow-inner">
+                <p id="summaryHeadline" class="text-base sm:text-lg font-extrabold text-white leading-snug">
+                  “ระดับบ่อ EQ มีแนวโน้มลดลงอย่างต่อเนื่อง”
+                </p>
+              </div>
+
+              <!-- Main Comparison Box with Big Arrow -->
+              <div class="flex items-center justify-center gap-4 py-2">
+                <div class="w-14 h-14 rounded-2xl bg-emerald-950/80 text-emerald-400 flex items-center justify-center text-3xl shadow-sm border border-emerald-500/40 flex-shrink-0" id="summaryTrendIcon">
+                  <i class="fa-solid fa-arrow-down-long"></i>
+                </div>
+                <div class="text-left">
+                  <p id="summaryFromTo" class="text-base sm:text-lg font-extrabold text-white font-sans">
+                    จาก 89.30% → 90.00%
+                  </p>
+                  <p id="summaryDiffDetail" class="text-xs sm:text-sm text-cyan-300 font-bold mt-0.5">
+                    เปลี่ยนแปลงตามข้อมูลจริงใน Google Sheet
+                  </p>
+                </div>
+              </div>
+
+              <!-- Key Stats Comparison -->
+              <div class="grid grid-cols-2 gap-2 text-center text-xs">
+                <div class="bg-[#061b36] p-2.5 rounded-xl border border-sky-500/30">
+                  <span class="text-sky-200 block font-medium">ค่าแรกที่บันทึก</span>
+                  <span id="summaryStartVal" class="text-sm font-extrabold text-white font-sans">89.30%</span>
+                </div>
+                <div class="bg-[#061b36] p-2.5 rounded-xl border border-sky-500/30">
+                  <span class="text-sky-200 block font-medium">ค่าล่าสุด</span>
+                  <span id="summaryEndVal" class="text-sm font-extrabold text-white font-sans">90.00%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: การดำเนินการและติดตามเฝ้าระวัง (Navy Block with Pure White Text) -->
+          <div class="navy-block rounded-2xl p-5 sm:p-6 shadow-xl flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-sky-500/20">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-xl bg-sky-950 text-cyan-300 flex items-center justify-center text-lg border border-sky-400/40">
+                    <i class="fa-solid fa-gear"></i>
+                  </div>
+                  <h3 class="text-base sm:text-lg font-bold text-white">การดำเนินการและติดตามเฝ้าระวัง</h3>
+                </div>
+                <button onclick="toggleActionNoteEdit()" title="แก้ไขหรือเพิ่มข้อความ" class="text-xs text-cyan-300 hover:text-white font-bold no-print">
+                  <i class="fa-regular fa-pen-to-square"></i>
+                </button>
+              </div>
+
+              <!-- 3 Standard Protocols (Navy background with White Text) -->
+              <div id="actionList" class="mt-4 space-y-3.5">
+                
+                <!-- Action 1 -->
+                <div class="flex items-start gap-3 p-3 rounded-xl bg-[#061e3d] border border-sky-500/25">
+                  <div class="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold text-sm flex items-center justify-center flex-shrink-0 shadow-sm border border-emerald-300/40">
+                    1
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-emerald-300">
+                      <i class="fa-solid fa-handshake text-xs"></i>
+                      <span>ประสานงานกับ TBC</span>
+                    </div>
+                    <p class="text-xs text-white mt-1 leading-relaxed font-medium">
+                      ประสานงานกับ TBC ในการตรวจติดตาม ชะลอการสูบน้ำ และตัดแยกน้ำฝนออก
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Action 2 -->
+                <div class="flex items-start gap-3 p-3 rounded-xl bg-[#061e3d] border border-sky-500/25">
+                  <div class="w-8 h-8 rounded-full bg-sky-600 text-white font-bold text-sm flex items-center justify-center flex-shrink-0 shadow-sm border border-sky-300/40">
+                    2
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-cyan-300">
+                      <i class="fa-regular fa-clock text-xs"></i>
+                      <span>ปรับลดเวลาขั้นตอนการบำบัด</span>
+                    </div>
+                    <p class="text-xs text-white mt-1 leading-relaxed font-medium">
+                      ปรับลดเวลาในขั้นตอนการบำบัด เพื่อเพิ่มปริมาณและรอบการบำบัดของระบบ SBR
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Action 3 -->
+                <div class="flex items-start gap-3 p-3 rounded-xl bg-[#061e3d] border border-sky-500/25">
+                  <div class="w-8 h-8 rounded-full bg-amber-500 text-white font-bold text-sm flex items-center justify-center flex-shrink-0 shadow-sm border border-amber-300/40">
+                    3
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-amber-300">
+                      <i class="fa-solid fa-droplet text-xs"></i>
+                      <span>ตรวจติดตามน้ำเข้าระบบ</span>
+                    </div>
+                    <p class="text-xs text-white mt-1 leading-relaxed font-medium">
+                      ตรวจติดตามน้ำเข้าระบบอย่างต่อเนื่อง /รายงานทุกๆ 1 ชม.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Note Edit Container -->
+              <div id="noteEditContainer" class="hidden mt-3 pt-3 border-t border-sky-500/20">
+                <label class="block text-xs font-bold text-white mb-1">บันทึกข้อความสั่งการเพิ่มเติมประจำวัน:</label>
+                <textarea id="dailyCustomNote" rows="2" placeholder="พิมพ์บันทึกสถานการณ์หรือข้อสั่งการ..." class="w-full text-xs p-2.5 rounded-xl bg-[#061b36] border border-sky-500/40 text-white focus:ring-2 focus:ring-cyan-400 placeholder-slate-400"></textarea>
+                <div class="flex justify-end gap-2 mt-2">
+                  <button onclick="saveDailyNote()" class="px-3 py-1 bg-sky-600 text-white text-xs font-bold rounded-lg hover:bg-sky-500 shadow-sm">บันทึก</button>
+                  <button onclick="toggleActionNoteEdit()" class="px-3 py-1 bg-slate-700 text-slate-200 text-xs font-bold rounded-lg hover:bg-slate-600">ยกเลิก</button>
+                </div>
+              </div>
+
+              <!-- Display Custom Note if exists -->
+              <div id="customNoteBadge" class="hidden mt-3 p-3 bg-amber-950/70 border border-amber-500/40 rounded-xl text-xs text-white">
+                <span class="font-bold block text-amber-300">หมายเหตุสั่งการเสริม:</span>
+                <span id="customNoteText" class="text-white mt-0.5 block"></span>
+              </div>
+            </div>
+
+            <!-- Target Standard Indicator -->
+            <div class="mt-4 pt-3 border-t border-sky-500/20 flex items-center justify-between text-[11px] text-sky-200">
+              <span class="text-white font-medium">เกณฑ์ควบคุม: ระดับน้ำไม่เกิน 90%</span>
+              <span class="inline-flex items-center gap-1 text-emerald-400 font-bold">
+                <i class="fa-solid fa-circle-check"></i> อยู่ในเกณฑ์มาตรฐาน
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= BOTTOM BANNER / FOOTER (Navy Blue Block with White Text) ================= -->
+      <footer class="navy-block rounded-2xl shadow-xl p-5 sm:p-6 text-white relative overflow-hidden wave-pattern">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-5 relative z-10">
+          
+          <!-- Left slogan -->
+          <div class="flex items-center gap-3.5">
+            <div class="w-11 h-11 rounded-2xl bg-sky-950 text-emerald-400 flex items-center justify-center text-2xl border border-sky-400/40 shadow-inner">
+              <i class="fa-solid fa-leaf"></i>
+            </div>
+            <div>
+              <p class="text-sm sm:text-base font-bold text-white tracking-wide">ร่วมกันดูแล คุณภาพน้ำ เพื่อสิ่งแวดล้อมที่ดีกว่า</p>
+              <p class="text-xs text-sky-200 font-medium">นิคมอุตสาหกรรมหลักชัยเมืองยาง มุ่งมั่นบริหารจัดการน้ำเสียอย่างมีประสิทธิภาพ</p>
+            </div>
+          </div>
+
+          <!-- Right 3 Pillars Badges -->
+          <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+            
+            <!-- Pillar 1 -->
+            <div class="flex items-center gap-2.5 bg-[#061b36] px-4 py-2.5 rounded-xl border border-sky-400/30 shadow-sm">
+              <div class="w-7 h-7 rounded-full bg-cyan-400 text-slate-950 flex items-center justify-center text-xs font-extrabold">
+                <i class="fa-solid fa-droplet"></i>
+              </div>
+              <div class="text-left text-xs">
+                <span class="font-bold block text-white leading-tight">น้ำสะอาด</span>
+                <span class="text-sky-200 text-[10px]">เพื่อชุมชน</span>
+              </div>
+            </div>
+
+            <!-- Pillar 2 -->
+            <div class="flex items-center gap-2.5 bg-[#061b36] px-4 py-2.5 rounded-xl border border-sky-400/30 shadow-sm">
+              <div class="w-7 h-7 rounded-full bg-emerald-400 text-slate-950 flex items-center justify-center text-xs font-extrabold">
+                <i class="fa-solid fa-seedling"></i>
+              </div>
+              <div class="text-left text-xs">
+                <span class="font-bold block text-white leading-tight">สิ่งแวดล้อมดีขึ้น</span>
+                <span class="text-emerald-200 text-[10px]">อย่างยั่งยืน</span>
+              </div>
+            </div>
+
+            <!-- Pillar 3 -->
+            <div class="flex items-center gap-2.5 bg-[#061b36] px-4 py-2.5 rounded-xl border border-sky-400/30 shadow-sm">
+              <div class="w-7 h-7 rounded-full bg-indigo-300 text-slate-950 flex items-center justify-center text-xs font-extrabold">
+                <i class="fa-solid fa-users"></i>
+              </div>
+              <div class="text-left text-xs">
+                <span class="font-bold block text-white leading-tight">ชุมชนมีคุณภาพชีวิตที่ดี</span>
+                <span class="text-indigo-200 text-[10px]">ไปด้วยกัน</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </footer>
+
+    </div>
+
+  </div>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    // Configuration
+    const SHEET_ID = '1CVnXQY94Vl-jb3ppmoUgEcz4xNlohw9lQQ_anq1wEH4';
+    const PASSWORD_CORRECT = 'UU@12345';
+    
+    // Global State
+    let parsedSheetData = {
+      dates: [],
+      rowsByDate: {}
+    };
+    let selectedDate = '';
+    let selectedUnit = 'percent'; // 'percent' or 'meter'
+    let selectedStartTime = 'all';
+    let selectedEndTime = 'all';
+    let chartInstance = null;
+    let autoRefreshTimer = null;
+
+    // Authentication Logic (Requirement 6)
+    function checkAuth() {
+      const isAuth = sessionStorage.getItem('water_eq_auth');
+      if (isAuth === 'true') {
+        document.getElementById('authModal').classList.add('hidden');
+        document.getElementById('mainContent').classList.remove('hidden');
+        initDashboard();
+      } else {
+        document.getElementById('authModal').classList.remove('hidden');
+        document.getElementById('mainContent').classList.add('hidden');
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const pwd = document.getElementById('passwordInput').value.trim();
+      const errEl = document.getElementById('authError');
+      if (pwd === PASSWORD_CORRECT) {
+        sessionStorage.setItem('water_eq_auth', 'true');
+        errEl.classList.add('hidden');
+        document.getElementById('authModal').classList.add('hidden');
+        document.getElementById('mainContent').classList.remove('hidden');
+        initDashboard();
+      } else {
+        errEl.classList.remove('hidden');
+        const input = document.getElementById('passwordInput');
+        input.classList.add('border-rose-500');
+        input.focus();
+      }
+    }
+
+    function togglePasswordVisibility() {
+      const input = document.getElementById('passwordInput');
+      const icon = document.getElementById('eyeIcon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem('water_eq_auth');
+      window.location.reload();
+    }
+
+    // Thai Date Formatter (e.g. 26/9/2569 -> 26 กันยายน 2569)
+    const thaiMonths = [
+      'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+      'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+    ];
+
+    function formatThaiDateDisplay(dateStr) {
+      if (!dateStr) return '';
+      const parts = dateStr.split(/[\/\-]/);
+      if (parts.length === 3) {
+        let day = parseInt(parts[0], 10);
+        let month = parseInt(parts[1], 10);
+        let year = parseInt(parts[2], 10);
+        if (parts[0].length === 4) {
+          year = parseInt(parts[0], 10);
+          month = parseInt(parts[1], 10);
+          day = parseInt(parts[2], 10);
+        }
+        if (year < 2400) year += 543;
+        const monthName = thaiMonths[month - 1] || month;
+        return `${day} ${monthName} ${year}`;
+      }
+      return dateStr;
+    }
+
+    // Time Normalizer ("8.00" -> "08:00", "9:00" -> "09:00", "00:00" -> "00:00")
+    function normalizeTime(t) {
+      if (!t) return '';
+      t = t.toString().trim();
+      t = t.replace('.', ':');
+      const parts = t.split(':');
+      if (parts.length >= 1) {
+        let h = parts[0].padStart(2, '0');
+        let m = (parts[1] || '00').padStart(2, '0');
+        return `${h}:${m}`;
+      }
+      return t;
+    }
+
+    // Fetch Google Sheet Data
+    async function fetchSheetData(isManual = false) {
+      const spinner = document.getElementById('refreshSpinner');
+      if (spinner) spinner.classList.add('fa-spin');
+      
+      const gvizUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&t=${new Date().getTime()}`;
+
+      try {
+        const response = await fetch(gvizUrl);
+        const text = await response.text();
+        const jsonMatch = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w\W]*)\);/);
+        if (jsonMatch && jsonMatch[1]) {
+          const parsed = JSON.parse(jsonMatch[1]);
+          processGvizData(parsed);
+        } else {
+          throw new Error('Failed to parse gviz response');
+        }
+      } catch (err) {
+        console.warn('Direct fetch failed, falling back to JSONP...', err);
+        fetchViaJsonp();
+      } finally {
+        setTimeout(() => {
+          if (spinner) spinner.classList.remove('fa-spin');
+          updateLastUpdatedTimestamp();
+        }, 400);
+      }
+    }
+
+    function fetchViaJsonp() {
+      const callbackName = 'gvizCallback_' + Math.floor(Math.random() * 100000);
+      window[callbackName] = function(data) {
+        processGvizData(data);
+        delete window[callbackName];
+        const scriptEl = document.getElementById('jsonp_gviz');
+        if (scriptEl) scriptEl.remove();
+      };
+      const script = document.createElement('script');
+      script.id = 'jsonp_gviz';
+      script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=responseHandler:${callbackName}&t=${new Date().getTime()}`;
+      document.body.appendChild(script);
+    }
+
+    function updateLastUpdatedTimestamp() {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      document.getElementById('lastUpdatedText').innerText = `อัปเดตล่าสุด: ${timeStr} น.`;
+    }
+
+    // Process Sheet Structure (Robust support for 00:00 - 23:00)
+    function processGvizData(gvizObj) {
+      if (!gvizObj || !gvizObj.table || !gvizObj.table.rows) return;
+      const rows = gvizObj.table.rows;
+      if (rows.length === 0) return;
+
+      const headerRow = rows[0].c;
+      const dateCols = [];
+      
+      for (let c = 2; c < headerRow.length; c++) {
+        const cell = headerRow[c];
+        if (cell) {
+          const dStr = cell.f || (cell.v !== null ? cell.v.toString() : '');
+          if (dStr && dStr.trim() !== '') {
+            dateCols.push({ colIndex: c, dateStr: dStr.trim() });
+          }
+        }
+      }
+
+      parsedSheetData.dates = dateCols.map(d => d.dateStr);
+      parsedSheetData.rowsByDate = {};
+      dateCols.forEach(d => {
+        parsedSheetData.rowsByDate[d.dateStr] = [];
+      });
+
+      let currentTime = '';
+      for (let r = 1; r < rows.length; r++) {
+        const cells = rows[r].c;
+        if (!cells) continue;
+
+        // Column A: Time
+        const cellA = cells[0];
+        if (cellA && (cellA.v !== null || cellA.f)) {
+          const rawTime = cellA.f || cellA.v;
+          if (rawTime) {
+            const normT = normalizeTime(rawTime);
+            // Stop/ignore duplicate template rows after 23:00 if they don't have metric
+            currentTime = normT;
+          }
+        }
+
+        if (!currentTime) continue;
+
+        // Column B: Metric name
+        const cellB = cells[1];
+        let metricType = '';
+        if (cellB && (cellB.v || cellB.f)) {
+          const bVal = (cellB.f || cellB.v).toString().toLowerCase();
+          if (bVal.includes('%')) metricType = 'percent';
+          else if (bVal.includes('m') || bVal.includes('เมตร')) metricType = 'meter';
+        }
+
+        // Check if any date in this row has data
+        let hasAnyData = false;
+        dateCols.forEach(d => {
+          const cellVal = cells[d.colIndex];
+          if (cellVal && cellVal.v !== null && cellVal.v !== undefined && cellVal.v !== '') {
+            hasAnyData = true;
+          }
+        });
+
+        // Ignore rows that neither have a metric label nor any data
+        if (!metricType && !hasAnyData) {
+          continue;
+        }
+
+        dateCols.forEach(d => {
+          const cellVal = cells[d.colIndex];
+          let numVal = null;
+          if (cellVal && cellVal.v !== null && cellVal.v !== undefined && cellVal.v !== '') {
+            const parsedNum = parseFloat(cellVal.v);
+            if (!isNaN(parsedNum)) numVal = parsedNum;
+          }
+
+          let dateArr = parsedSheetData.rowsByDate[d.dateStr];
+          let timeEntry = dateArr.find(item => item.time === currentTime);
+          if (!timeEntry) {
+            timeEntry = { time: currentTime, percent: null, meter: null };
+            dateArr.push(timeEntry);
+          }
+
+          if (metricType === 'percent') {
+            if (numVal !== null) timeEntry.percent = numVal;
+          } else if (metricType === 'meter') {
+            if (numVal !== null) timeEntry.meter = numVal;
+          } else {
+            if (numVal !== null && timeEntry.percent === null) {
+              timeEntry.percent = numVal;
+            }
+          }
+        });
+      }
+
+      // Sort entries by time from 00:00 to 23:00
+      dateCols.forEach(d => {
+        parsedSheetData.rowsByDate[d.dateStr].sort((a, b) => a.time.localeCompare(b.time));
+      });
+
+      updateDateDropdown();
+      renderDashboard();
+    }
+
+    function updateDateDropdown() {
+      const select = document.getElementById('dateSelect');
+      const currentSelected = selectedDate || select.value;
+      select.innerHTML = '';
+
+      if (parsedSheetData.dates.length === 0) {
+        select.innerHTML = '<option value="">ไม่มีข้อมูลวันที่</option>';
+        return;
+      }
+
+      let defaultDate = parsedSheetData.dates[0];
+      for (let i = parsedSheetData.dates.length - 1; i >= 0; i--) {
+        const d = parsedSheetData.dates[i];
+        const entries = parsedSheetData.rowsByDate[d] || [];
+        const hasData = entries.some(e => e.percent !== null || e.meter !== null);
+        if (hasData) {
+          defaultDate = d;
+          break;
+        }
+      }
+
+      parsedSheetData.dates.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.innerText = formatThaiDateDisplay(d) + (d === defaultDate ? ' (ล่าสุด)' : '');
+        select.appendChild(opt);
+      });
+
+      if (currentSelected && parsedSheetData.dates.includes(currentSelected)) {
+        select.value = currentSelected;
+        selectedDate = currentSelected;
+      } else {
+        select.value = defaultDate;
+        selectedDate = defaultDate;
+      }
+
+      updateTimeDropdowns();
+    }
+
+    function updateTimeDropdowns() {
+      const startSelect = document.getElementById('startTimeSelect');
+      const endSelect = document.getElementById('endTimeSelect');
+      const dataForDate = parsedSheetData.rowsByDate[selectedDate] || [];
+
+      const timeList = dataForDate.map(e => e.time);
+      
+      startSelect.innerHTML = '<option value="all">ตั้งแต่เวลาแรก (00:00)</option>';
+      endSelect.innerHTML = '<option value="all">ถึงเวลาล่าสุด (23:00)</option>';
+
+      timeList.forEach(t => {
+        const optStart = document.createElement('option');
+        optStart.value = t;
+        optStart.innerText = `${t} น.`;
+        startSelect.appendChild(optStart);
+
+        const optEnd = document.createElement('option');
+        optEnd.value = t;
+        optEnd.innerText = `${t} น.`;
+        endSelect.appendChild(optEnd);
+      });
+
+      startSelect.value = selectedStartTime;
+      endSelect.value = selectedEndTime;
+    }
+
+    function onDateChanged() {
+      selectedDate = document.getElementById('dateSelect').value;
+      selectedStartTime = 'all';
+      selectedEndTime = 'all';
+      updateTimeDropdowns();
+      renderDashboard();
+    }
+
+    function onTimeRangeChanged() {
+      selectedStartTime = document.getElementById('startTimeSelect').value;
+      selectedEndTime = document.getElementById('endTimeSelect').value;
+      renderDashboard();
+    }
+
+    function setMetricUnit(unit) {
+      selectedUnit = unit;
+      const btnPercent = document.getElementById('btnUnitPercent');
+      const btnMeter = document.getElementById('btnUnitMeter');
+
+      if (unit === 'percent') {
+        btnPercent.className = 'py-1.5 text-xs font-bold rounded-lg transition shadow-sm bg-sky-600 text-white';
+        btnMeter.className = 'py-1.5 text-xs font-bold rounded-lg transition text-sky-200 hover:text-white';
+      } else {
+        btnMeter.className = 'py-1.5 text-xs font-bold rounded-lg transition shadow-sm bg-sky-600 text-white';
+        btnPercent.className = 'py-1.5 text-xs font-bold rounded-lg transition text-sky-200 hover:text-white';
+      }
+      renderDashboard();
+    }
+
+    function resetFiltersToActiveData() {
+      selectedStartTime = 'all';
+      selectedEndTime = 'all';
+      document.getElementById('startTimeSelect').value = 'all';
+      document.getElementById('endTimeSelect').value = 'all';
+      renderDashboard();
+    }
+
+    function setShiftRange(start, end) {
+      selectedStartTime = start;
+      selectedEndTime = end;
+      document.getElementById('startTimeSelect').value = start;
+      document.getElementById('endTimeSelect').value = end;
+      renderDashboard();
+    }
+
+    // Main Render Dashboard
+    function renderDashboard() {
+      if (!selectedDate || !parsedSheetData.rowsByDate[selectedDate]) return;
+
+      const fullList = parsedSheetData.rowsByDate[selectedDate];
+      const thaiDate = formatThaiDateDisplay(selectedDate);
+      
+      // Update Headers
+      document.getElementById('headerDateDisplay').innerText = thaiDate;
+      document.getElementById('chartTitle').innerText = `แนวโน้มระดับบ่อ EQ วันที่ ${thaiDate}`;
+      const unitSymbol = selectedUnit === 'percent' ? '%' : ' m';
+      const unitLabel = selectedUnit === 'percent' ? 'จุดเปอร์เซ็นต์' : 'เมตร';
+      document.getElementById('legendText').innerText = `ระดับบ่อ EQ (${selectedUnit === 'percent' ? '%' : 'm'})`;
+
+      // Filter by Time Range
+      let startIndex = 0;
+      let endIndex = fullList.length - 1;
+
+      if (selectedStartTime !== 'all') {
+        const idx = fullList.findIndex(e => e.time === selectedStartTime);
+        if (idx !== -1) startIndex = idx;
+      }
+      if (selectedEndTime !== 'all') {
+        const idx = fullList.findIndex(e => e.time === selectedEndTime);
+        if (idx !== -1) endIndex = idx;
+      }
+
+      if (startIndex > endIndex) {
+        const temp = startIndex;
+        startIndex = endIndex;
+        endIndex = temp;
+      }
+
+      const filteredList = fullList.slice(startIndex, endIndex + 1);
+
+      // Points with actual data
+      const validPoints = filteredList.filter(e => {
+        const val = selectedUnit === 'percent' ? e.percent : e.meter;
+        return val !== null && val !== undefined;
+      });
+
+      // KPI & Summary Calculations
+      if (validPoints.length > 0) {
+        const firstPoint = validPoints[0];
+        const lastPoint = validPoints[validPoints.length - 1];
+
+        const firstVal = selectedUnit === 'percent' ? firstPoint.percent : firstPoint.meter;
+        const lastVal = selectedUnit === 'percent' ? lastPoint.percent : lastPoint.meter;
+
+        const change = firstVal - lastVal; // positive means decreased
+        const absChange = Math.abs(change);
+
+        // KPI 1: ระดับบ่อ EQ ล่าสุด
+        document.getElementById('kpiLatestVal').innerText = `${lastVal.toFixed(2)}${unitSymbol}`;
+        document.getElementById('kpiLatestTimeBadge').innerText = `(เวลา ${lastPoint.time} น.)`;
+
+        // KPI 2: ลดลง / เพิ่มขึ้น จากเวลาแรก
+        document.getElementById('kpiChangeLabel').innerText = `${change >= 0 ? 'ลดลง' : 'เพิ่มขึ้น'}จากเวลา ${firstPoint.time} น.`;
+        document.getElementById('kpiChangeVal').innerText = absChange.toFixed(2);
+        document.getElementById('kpiChangeUnitBadge').innerText = unitLabel;
+        
+        const arrowEl = document.getElementById('kpiChangeArrow');
+        const tagEl = document.getElementById('kpiChangeTag');
+        if (change > 0) {
+          arrowEl.innerHTML = '<i class="fa-solid fa-arrow-down text-emerald-400"></i>';
+          tagEl.innerText = 'แนวโน้มลดลง';
+          tagEl.className = 'text-emerald-300 font-bold bg-emerald-950/90 px-2 py-0.5 rounded border border-emerald-400/30';
+        } else if (change < 0) {
+          arrowEl.innerHTML = '<i class="fa-solid fa-arrow-up text-rose-400"></i>';
+          tagEl.innerText = 'แนวโน้มเพิ่มขึ้น';
+          tagEl.className = 'text-rose-300 font-bold bg-rose-950/90 px-2 py-0.5 rounded border border-rose-400/30';
+        } else {
+          arrowEl.innerHTML = '<i class="fa-solid fa-minus text-sky-200"></i>';
+          tagEl.innerText = 'ระดับคงที่';
+          tagEl.className = 'text-sky-200 font-bold bg-sky-950/90 px-2 py-0.5 rounded border border-sky-400/30';
+        }
+
+        // KPI 3: ช่วงเวลาติดตาม
+        document.getElementById('kpiPeriodVal').innerText = `${firstPoint.time} - ${lastPoint.time} น.`;
+        
+        const [h1, m1] = firstPoint.time.split(':').map(Number);
+        const [h2, m2] = lastPoint.time.split(':').map(Number);
+        let hoursDiff = (h2 + m2/60) - (h1 + m1/60);
+        if (hoursDiff < 0) hoursDiff += 24;
+        const displayHours = hoursDiff === 0 ? validPoints.length : hoursDiff;
+        document.getElementById('kpiHoursVal').innerText = `(${displayHours.toFixed(displayHours % 1 === 0 ? 0 : 1)} ชม.)`;
+        document.getElementById('kpiPointsCount').innerText = `บันทึก ${validPoints.length} จุด`;
+
+        // KPI 4: อัตราการเปลี่ยนแปลงเฉลี่ย
+        const ratePerHour = hoursDiff > 0 ? (absChange / hoursDiff) : 0;
+        document.getElementById('kpiRateLabel').innerText = `อัตราการ${change >= 0 ? 'ลดลง' : 'เพิ่มขึ้น'}เฉลี่ย`;
+        document.getElementById('kpiRateVal').innerText = ratePerHour.toFixed(2);
+        document.getElementById('kpiRateUnitBadge').innerText = `${unitLabel}/ชั่วโมง`;
+
+        // Card สรุปภาพรวม
+        const headlineEl = document.getElementById('summaryHeadline');
+        const trendIconEl = document.getElementById('summaryTrendIcon');
+        if (change > 0) {
+          headlineEl.innerText = '“ระดับบ่อ EQ มีแนวโน้มลดลงอย่างต่อเนื่อง”';
+          trendIconEl.className = 'w-14 h-14 rounded-2xl bg-emerald-950/80 text-emerald-400 flex items-center justify-center text-3xl shadow-sm border border-emerald-500/40 flex-shrink-0';
+          trendIconEl.innerHTML = '<i class="fa-solid fa-arrow-down-long"></i>';
+        } else if (change < 0) {
+          headlineEl.innerText = '“ระดับบ่อ EQ มีแนวโน้มเพิ่มขึ้น”';
+          trendIconEl.className = 'w-14 h-14 rounded-2xl bg-rose-950/80 text-rose-400 flex items-center justify-center text-3xl shadow-sm border border-rose-500/40 flex-shrink-0';
+          trendIconEl.innerHTML = '<i class="fa-solid fa-arrow-up-long"></i>';
+        } else {
+          headlineEl.innerText = '“ระดับบ่อ EQ ทรงตัวสม่ำเสมอ”';
+          trendIconEl.className = 'w-14 h-14 rounded-2xl bg-sky-950/80 text-sky-300 flex items-center justify-center text-3xl shadow-sm border border-sky-500/40 flex-shrink-0';
+          trendIconEl.innerHTML = '<i class="fa-solid fa-arrows-left-right"></i>';
+        }
+
+        document.getElementById('summaryFromTo').innerText = `จาก ${firstVal.toFixed(2)}${unitSymbol} → ${lastVal.toFixed(2)}${unitSymbol}`;
+        document.getElementById('summaryDiffDetail').innerText = `${change >= 0 ? 'ลดลง' : 'เพิ่มขึ้น'}รวม ${absChange.toFixed(2)} ${unitLabel} ภายใน ${displayHours.toFixed(displayHours % 1 === 0 ? 0 : 1)} ชั่วโมง`;
+        document.getElementById('summaryStartVal').innerText = `${firstVal.toFixed(2)}${unitSymbol}`;
+        document.getElementById('summaryEndVal').innerText = `${lastVal.toFixed(2)}${unitSymbol}`;
+
+        const allVals = validPoints.map(p => selectedUnit === 'percent' ? p.percent : p.meter);
+        const maxVal = Math.max(...allVals);
+        const minVal = Math.min(...allVals);
+        document.getElementById('chartMinMaxSummary').innerText = `สูงสุด: ${maxVal.toFixed(2)}${unitSymbol} | ต่ำสุด: ${minVal.toFixed(2)}${unitSymbol}`;
+
+      } else {
+        document.getElementById('kpiLatestVal').innerText = `-`;
+        document.getElementById('kpiLatestTimeBadge').innerText = `(ไม่มีข้อมูล)`;
+        document.getElementById('kpiChangeVal').innerText = `-`;
+        document.getElementById('kpiPeriodVal').innerText = `ไม่มีข้อมูล`;
+        document.getElementById('kpiRateVal').innerText = `-`;
+        document.getElementById('summaryHeadline').innerText = '“ยังไม่มีการบันทึกข้อมูลในช่วงเวลานี้”';
+        document.getElementById('summaryFromTo').innerText = `-`;
+        document.getElementById('summaryDiffDetail').innerText = `กรุณาเลือกช่วงเวลาอื่น หรือรอการบันทึกใน Google Sheet`;
+        document.getElementById('chartMinMaxSummary').innerText = `สูงสุด: - | ต่ำสุด: -`;
+      }
+
+      renderChart(filteredList);
+      renderDataTable(fullList);
+      loadDailyNote();
+    }
+
+    // Chart.js Rendering for Navy Theme
+    function renderChart(items) {
+      const ctx = document.getElementById('eqLevelChart').getContext('2d');
+      const unitSymbol = selectedUnit === 'percent' ? '%' : ' m';
+
+      const activeItems = items.filter(e => {
+        const val = selectedUnit === 'percent' ? e.percent : e.meter;
+        return val !== null;
+      });
+
+      const displayItems = activeItems.length > 0 ? activeItems : items;
+      const labels = displayItems.map(e => e.time);
+      const dataPoints = displayItems.map(e => selectedUnit === 'percent' ? e.percent : e.meter);
+
+      // Cyan-blue gradient on dark navy
+      const gradient = ctx.createLinearGradient(0, 0, 0, 380);
+      gradient.addColorStop(0, 'rgba(56, 189, 248, 0.45)');
+      gradient.addColorStop(0.65, 'rgba(56, 189, 248, 0.12)');
+      gradient.addColorStop(1, 'rgba(56, 189, 248, 0.01)');
+
+      const validNumbers = dataPoints.filter(v => v !== null && !isNaN(v));
+      let yMin = 86;
+      let yMax = 91;
+      if (validNumbers.length > 0) {
+        const minVal = Math.min(...validNumbers);
+        const maxVal = Math.max(...validNumbers);
+        const padding = Math.max((maxVal - minVal) * 0.35, selectedUnit === 'percent' ? 0.6 : 0.2);
+        yMin = Math.floor((minVal - padding) * 2) / 2;
+        yMax = Math.ceil((maxVal + padding) * 2) / 2;
+      }
+
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+
+      Chart.register(ChartDataLabels);
+
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: `ระดับบ่อ EQ`,
+            data: dataPoints,
+            borderColor: '#38bdf8', // Bright glowing cyan
+            backgroundColor: gradient,
+            borderWidth: 3.5,
+            fill: true,
+            tension: 0.2,
+            pointBackgroundColor: '#38bdf8',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2.5,
+            pointRadius: 6,
+            pointHoverRadius: 9,
+            pointHoverBackgroundColor: '#0284c7',
+            pointHoverBorderColor: '#ffffff',
+            pointHoverBorderWidth: 3,
+            spanGaps: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: {
+            padding: {
+              top: 36,
+              right: 30,
+              bottom: 10,
+              left: 10
+            }
+          },
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              backgroundColor: 'rgba(5, 19, 38, 0.95)',
+              titleFont: { family: 'Prompt', size: 13, weight: 'bold' },
+              bodyFont: { family: 'Prompt', size: 12 },
+              padding: 12,
+              cornerRadius: 10,
+              borderColor: 'rgba(56, 189, 248, 0.4)',
+              borderWidth: 1,
+              callbacks: {
+                label: function(context) {
+                  return `ระดับบ่อ EQ: ${context.parsed.y !== null ? context.parsed.y.toFixed(2) : '-'} ${unitSymbol}`;
+                }
+              }
+            },
+            datalabels: {
+              display: function(context) {
+                return context.dataset.data[context.dataIndex] !== null;
+              },
+              align: 'top',
+              offset: 8,
+              borderRadius: 6,
+              backgroundColor: '#0284c7',
+              borderColor: '#38bdf8',
+              borderWidth: 1,
+              color: '#ffffff',
+              font: {
+                family: 'Prompt',
+                weight: 'bold',
+                size: 11
+              },
+              padding: {
+                top: 4,
+                bottom: 4,
+                left: 8,
+                right: 8
+              },
+              formatter: function(value) {
+                return value !== null ? `${value.toFixed(2)}${unitSymbol}` : '';
+              }
+            }
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'เวลา',
+                font: { family: 'Prompt', size: 13, weight: '700' },
+                color: '#ffffff' // White text
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)',
+                drawBorder: false
+              },
+              ticks: {
+                font: { family: 'Prompt', size: 12, weight: '600' },
+                color: '#e2e8f0' // Bright white/slate
+              }
+            },
+            y: {
+              min: yMin,
+              max: yMax,
+              title: {
+                display: true,
+                text: `ระดับบ่อ EQ (${selectedUnit === 'percent' ? '%' : 'm'})`,
+                font: { family: 'Prompt', size: 13, weight: '700' },
+                color: '#ffffff' // White text
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)',
+                drawBorder: false
+              },
+              ticks: {
+                font: { family: 'Prompt', size: 11, weight: '500' },
+                color: '#e2e8f0', // Bright white/slate
+                callback: function(value) {
+                  return value.toFixed(1);
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Raw Data Table (Navy Theme)
+    function renderDataTable(list) {
+      const tbody = document.getElementById('dataTableBody');
+      tbody.innerHTML = '';
+      list.forEach(item => {
+        const tr = document.createElement('tr');
+        const hasVal = item.percent !== null || item.meter !== null;
+        tr.className = hasVal ? 'bg-[#092243] hover:bg-[#0e3568] transition' : 'bg-[#061830] text-slate-400';
+        tr.innerHTML = `
+          <td class="p-2.5 border border-sky-500/20 font-bold font-sans text-white">${item.time} น.</td>
+          <td class="p-2.5 border border-sky-500/20 font-sans font-bold text-cyan-300">${item.percent !== null ? item.percent.toFixed(2) + '%' : '-'}</td>
+          <td class="p-2.5 border border-sky-500/20 font-sans text-teal-300 font-semibold">${item.meter !== null ? item.meter.toFixed(2) + ' m' : '-'}</td>
+          <td class="p-2.5 border border-sky-500/20">
+            ${hasVal 
+              ? '<span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">บันทึกแล้ว</span>'
+              : '<span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] bg-slate-800 text-slate-400">รอข้อมูล</span>'}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function toggleDataTable() {
+      const container = document.getElementById('dataTableContainer');
+      container.classList.toggle('hidden');
+    }
+
+    // Auto Refresh Setting
+    function changeRefreshInterval(ms) {
+      if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+      const interval = parseInt(ms, 10);
+      if (interval > 0) {
+        autoRefreshTimer = setInterval(() => {
+          fetchSheetData(false);
+        }, interval);
+      }
+    }
+
+    // Daily Operational Note
+    function toggleActionNoteEdit() {
+      const container = document.getElementById('noteEditContainer');
+      container.classList.toggle('hidden');
+      if (!container.classList.contains('hidden')) {
+        document.getElementById('dailyCustomNote').focus();
+      }
+    }
+
+    function saveDailyNote() {
+      const note = document.getElementById('dailyCustomNote').value.trim();
+      const key = `daily_note_${selectedDate}`;
+      if (note) {
+        localStorage.setItem(key, note);
+      } else {
+        localStorage.removeItem(key);
+      }
+      toggleActionNoteEdit();
+      loadDailyNote();
+    }
+
+    function loadDailyNote() {
+      const key = `daily_note_${selectedDate}`;
+      const note = localStorage.getItem(key);
+      const badge = document.getElementById('customNoteBadge');
+      const text = document.getElementById('customNoteText');
+      const textarea = document.getElementById('dailyCustomNote');
+      if (note) {
+        text.innerText = note;
+        textarea.value = note;
+        badge.classList.remove('hidden');
+      } else {
+        text.innerText = '';
+        textarea.value = '';
+        badge.classList.add('hidden');
+      }
+    }
+
+    // Init
+    function initDashboard() {
+      fetchSheetData();
+      changeRefreshInterval(30000);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      checkAuth();
+    });
+  </script>
+</body>
+</html>
