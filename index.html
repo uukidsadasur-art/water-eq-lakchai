@@ -35,18 +35,13 @@
       background-color: #071326; /* Deep midnight navy canvas */
       color: #ffffff;
     }
-    /* Navy / Blue Themes for all blocks */
     .navy-block {
       background: linear-gradient(145deg, #0a2547 0%, #0d2f57 100%);
-      border: 1px solid rgba(56, 189, 248, 0.2);
-    }
-    .navy-block-darker {
-      background: linear-gradient(145deg, #071e3b 0%, #0a284e 100%);
-      border: 1px solid rgba(56, 189, 248, 0.25);
+      border: 1px solid rgba(56, 189, 248, 0.22);
     }
     .kpi-navy-1 {
       background: linear-gradient(135deg, #092a54 0%, #0f3d73 100%);
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      border: 1px solid rgba(56, 189, 248, 0.35);
     }
     .kpi-navy-2 {
       background: linear-gradient(135deg, #063559 0%, #0c4d7e 100%);
@@ -61,7 +56,7 @@
       border: 1px solid rgba(165, 180, 252, 0.35);
     }
     .wave-pattern {
-      background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1.5px, transparent 1.5px);
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px);
       background-size: 14px 14px;
     }
     .kpi-card {
@@ -152,7 +147,7 @@
       <div class="flex items-center gap-3">
         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-medium">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          เชื่อมต่อ Google Sheet Real-time (00:00 - 23:00)
+          เชื่อมต่อ Google Sheet Real-time
         </span>
         <span class="text-sky-500 hidden sm:inline">|</span>
         <span id="lastUpdatedText" class="text-sky-100 font-medium">อัปเดตล่าสุด: กำลังโหลด...</span>
@@ -178,7 +173,7 @@
 
         <a href="https://docs.google.com/spreadsheets/d/1CVnXQY94Vl-jb3ppmoUgEcz4xNlohw9lQQ_anq1wEH4/edit?usp=sharing" target="_blank" title="เปิด Google Sheet ต้นทาง" class="px-3 py-1 bg-emerald-700 hover:bg-emerald-600 text-white rounded-lg border border-emerald-500/50 transition flex items-center gap-1.5 font-medium shadow-sm">
           <i class="fa-solid fa-file-excel"></i>
-          <span class="hidden sm:inline">ไปที่ Sheet</span>
+          <span class="hidden sm:inline">Google Sheet</span>
         </a>
 
         <button onclick="window.print()" title="พิมพ์หรือบันทึก PDF" class="px-3 py-1 bg-[#0f3460] hover:bg-sky-600 text-white rounded-lg border border-sky-500/40 transition flex items-center gap-1.5 font-medium">
@@ -196,7 +191,7 @@
     <!-- Main Container -->
     <div class="page-container max-w-[1440px] w-full mx-auto p-4 sm:p-6 lg:p-7 flex-1 space-y-5">
 
-      <!-- ================= HEADER BANNER (Navy Blue Block with Crisp White Text) ================= -->
+      <!-- ================= HEADER BANNER ================= -->
       <header class="navy-block rounded-2xl shadow-xl overflow-hidden text-white relative wave-pattern">
         <div class="p-5 sm:p-7 flex flex-col lg:flex-row lg:items-center justify-between gap-5 relative z-10">
           
@@ -222,60 +217,59 @@
             </div>
           </div>
 
-          <!-- Date Badge Card (Navy with White Text) -->
+          <!-- Date Badge Card -->
           <div class="bg-[#061b36]/90 border border-sky-400/40 rounded-xl px-4 py-2.5 sm:px-5 sm:py-3 flex items-center gap-3 shadow-md self-start lg:self-auto">
             <div class="w-10 h-10 rounded-lg bg-sky-600 text-white flex items-center justify-center text-xl shadow-sm">
               <i class="fa-regular fa-calendar-days"></i>
             </div>
             <div>
-              <span class="text-[11px] uppercase tracking-wider text-sky-200 block font-bold">วันที่</span>
-              <span id="headerDateDisplay" class="text-sm sm:text-base font-extrabold text-white tracking-wide">26 กันยายน 2569</span>
+              <span id="headerDateLabel" class="text-[11px] uppercase tracking-wider text-sky-200 block font-bold">วันที่</span>
+              <span id="headerDateDisplay" class="text-sm sm:text-base font-extrabold text-white tracking-wide">กำลังโหลด...</span>
             </div>
           </div>
         </div>
 
-        <!-- Glowing bottom line -->
         <div class="h-1.5 w-full bg-gradient-to-r from-cyan-400 via-sky-500 to-blue-600"></div>
       </header>
 
-      <!-- ================= 4 KPI SUMMARY CARDS (Navy Blue with Pure White Text) ================= -->
+      <!-- ================= 4 KPI SUMMARY CARDS ================= -->
       <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-white">
         
-        <!-- KPI 1: ระดับบ่อ EQ ล่าสุด (Navy Card 1) -->
+        <!-- KPI 1 -->
         <div class="kpi-card kpi-navy-1 rounded-2xl p-5 shadow-lg relative overflow-hidden flex flex-col justify-between wave-pattern">
           <div class="flex items-start justify-between">
             <div>
-              <span class="text-xs font-semibold text-sky-200 block">ระดับบ่อ EQ ล่าสุด</span>
+              <span id="kpi1Title" class="text-xs font-semibold text-sky-200 block">ระดับบ่อ EQ ล่าสุด</span>
               <div class="flex items-baseline gap-1 mt-1">
-                <span id="kpiLatestVal" class="text-3xl sm:text-4xl font-extrabold text-white font-sans tracking-tight">87.74%</span>
+                <span id="kpiLatestVal" class="text-3xl sm:text-4xl font-extrabold text-white font-sans tracking-tight">-</span>
               </div>
             </div>
             <div class="w-12 h-12 rounded-full bg-sky-950/70 text-cyan-300 flex items-center justify-center text-2xl shadow-inner border border-sky-400/40">
-              <i class="fa-solid fa-water"></i>
+              <i id="kpi1Icon" class="fa-solid fa-water"></i>
             </div>
           </div>
           <div class="mt-4 pt-2.5 border-t border-sky-500/25 flex items-center justify-between text-xs">
             <span id="kpiLatestTimeBadge" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-sky-950/90 text-cyan-300 font-bold border border-sky-400/30">
-              (เวลา 08:00 น.)
+              (เวลารอข้อมูล)
             </span>
-            <span class="text-sky-200 font-medium text-[11px]">สถานะปกติ</span>
+            <span id="kpi1Sub" class="text-sky-200 font-medium text-[11px]">สถานะปกติ</span>
           </div>
         </div>
 
-        <!-- KPI 2: การเปลี่ยนแปลง (Navy Card 2) -->
+        <!-- KPI 2 -->
         <div class="kpi-card kpi-navy-2 rounded-2xl p-5 shadow-lg relative overflow-hidden flex flex-col justify-between wave-pattern">
           <div class="flex items-start justify-between">
             <div>
-              <span id="kpiChangeLabel" class="text-xs font-semibold text-emerald-200 block">ลดลงจากเวลา 03:00 น.</span>
+              <span id="kpiChangeLabel" class="text-xs font-semibold text-emerald-200 block">การเปลี่ยนแปลง</span>
               <div class="flex items-baseline gap-2 mt-1">
-                <span id="kpiChangeVal" class="text-3xl sm:text-4xl font-extrabold text-white font-sans tracking-tight">1.56</span>
+                <span id="kpiChangeVal" class="text-3xl sm:text-4xl font-extrabold text-white font-sans tracking-tight">-</span>
                 <span id="kpiChangeArrow" class="text-2xl text-emerald-400">
                   <i class="fa-solid fa-arrow-down"></i>
                 </span>
               </div>
             </div>
             <div class="w-12 h-12 rounded-full bg-emerald-950/70 text-emerald-300 flex items-center justify-center text-xl shadow-inner border border-emerald-400/40">
-              <i class="fa-solid fa-chart-line"></i>
+              <i id="kpi2Icon" class="fa-solid fa-chart-line"></i>
             </div>
           </div>
           <div class="mt-4 pt-2.5 border-t border-emerald-500/25 flex items-center justify-between text-xs">
@@ -284,159 +278,265 @@
           </div>
         </div>
 
-        <!-- KPI 3: ช่วงเวลาติดตาม (Navy Card 3) -->
+        <!-- KPI 3 -->
         <div class="kpi-card kpi-navy-3 rounded-2xl p-5 shadow-lg relative overflow-hidden flex flex-col justify-between wave-pattern">
           <div class="flex items-start justify-between">
             <div>
-              <span class="text-xs font-semibold text-teal-200 block">ช่วงเวลาติดตาม</span>
+              <span id="kpi3Title" class="text-xs font-semibold text-teal-200 block">ช่วงเวลาติดตาม</span>
               <div class="flex items-baseline gap-1 mt-1">
-                <span id="kpiPeriodVal" class="text-2xl sm:text-3xl font-extrabold text-white font-sans tracking-tight">00:00 - 23:00 น.</span>
+                <span id="kpiPeriodVal" class="text-2xl sm:text-3xl font-extrabold text-white font-sans tracking-tight">-</span>
               </div>
             </div>
             <div class="w-12 h-12 rounded-full bg-teal-950/70 text-teal-300 flex items-center justify-center text-xl shadow-inner border border-teal-400/40">
-              <i class="fa-regular fa-clock"></i>
+              <i id="kpi3Icon" class="fa-regular fa-clock"></i>
             </div>
           </div>
           <div class="mt-4 pt-2.5 border-t border-teal-500/25 flex items-center justify-between text-xs">
-            <span id="kpiHoursVal" class="text-white font-bold">(24 ชั่วโมง)</span>
-            <span id="kpiPointsCount" class="text-teal-200 font-medium text-[11px]">บันทึก 6 จุด</span>
+            <span id="kpiHoursVal" class="text-white font-bold">(-)</span>
+            <span id="kpiPointsCount" class="text-teal-200 font-medium text-[11px]">-</span>
           </div>
         </div>
 
-        <!-- KPI 4: อัตราการเปลี่ยนแปลงเฉลี่ย (Navy Card 4) -->
+        <!-- KPI 4 -->
         <div class="kpi-card kpi-navy-4 rounded-2xl p-5 shadow-lg relative overflow-hidden flex flex-col justify-between wave-pattern">
           <div class="flex items-start justify-between">
             <div>
-              <span id="kpiRateLabel" class="text-xs font-semibold text-indigo-200 block">อัตราการลดลงเฉลี่ย</span>
+              <span id="kpiRateLabel" class="text-xs font-semibold text-indigo-200 block">อัตราการเปลี่ยนแปลงเฉลี่ย</span>
               <div class="flex items-baseline gap-1 mt-1">
-                <span id="kpiRateVal" class="text-3xl sm:text-4xl font-extrabold text-white font-sans tracking-tight">0.39</span>
+                <span id="kpiRateVal" class="text-3xl sm:text-4xl font-extrabold text-white font-sans tracking-tight">-</span>
               </div>
             </div>
             <div class="w-12 h-12 rounded-full bg-indigo-950/70 text-indigo-300 flex items-center justify-center text-xl shadow-inner border border-indigo-400/40">
-              <i class="fa-solid fa-chart-column"></i>
+              <i id="kpi4Icon" class="fa-solid fa-chart-column"></i>
             </div>
           </div>
           <div class="mt-4 pt-2.5 border-t border-indigo-500/25 flex items-center justify-between text-xs">
             <span id="kpiRateUnitBadge" class="text-white font-semibold">จุดเปอร์เซ็นต์/ชั่วโมง</span>
-            <span class="text-indigo-200 font-medium text-[11px]">สม่ำเสมอ</span>
+            <span id="kpi4Sub" class="text-indigo-200 font-medium text-[11px]">สม่ำเสมอ</span>
           </div>
         </div>
 
       </section>
 
-      <!-- ================= CONTROLS & FILTER BAR (Navy Blue Block with White Text) ================= -->
-      <section class="navy-block rounded-2xl shadow-lg p-4 sm:p-5 no-print text-white">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-          
-          <!-- Date Dropdown (Requirement 4) -->
-          <div class="md:col-span-3">
-            <label class="block text-xs font-bold text-white mb-1.5 flex items-center gap-1.5">
-              <i class="fa-regular fa-calendar text-cyan-400"></i>
-              <span>เลือกวันที่:</span>
-            </label>
-            <select id="dateSelect" onchange="onDateChanged()" class="w-full bg-[#071d37] border border-sky-500/40 text-white text-sm rounded-xl px-3 py-2 font-medium focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition">
-              <option value="">กำลังโหลดวันที่...</option>
-            </select>
-          </div>
-
-          <!-- Time Range Dropdown / Selector (00:00 ถึง 23:00) -->
-          <div class="md:col-span-4">
-            <label class="block text-xs font-bold text-white mb-1.5 flex items-center gap-1.5">
-              <i class="fa-regular fa-clock text-cyan-400"></i>
-              <span>เลือกช่วงเวลา (00:00 - 23:00 น.):</span>
-            </label>
-            <div class="flex items-center gap-2">
-              <select id="startTimeSelect" onchange="onTimeRangeChanged()" class="w-full bg-[#071d37] border border-sky-500/40 text-white text-xs sm:text-sm rounded-xl px-2.5 py-2 font-medium focus:ring-2 focus:ring-cyan-400">
-                <option value="all">ตั้งแต่ต้น (00:00)</option>
-              </select>
-              <span class="text-sky-300 font-bold text-xs">ถึง</span>
-              <select id="endTimeSelect" onchange="onTimeRangeChanged()" class="w-full bg-[#071d37] border border-sky-500/40 text-white text-xs sm:text-sm rounded-xl px-2.5 py-2 font-medium focus:ring-2 focus:ring-cyan-400">
-                <option value="all">เวลาล่าสุด (23:00)</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Metric Selector: % vs m (Requirement 2) -->
-          <div class="md:col-span-3">
-            <label class="block text-xs font-bold text-white mb-1.5 flex items-center gap-1.5">
-              <i class="fa-solid fa-ruler-vertical text-cyan-400"></i>
-              <span>หน่วยแสดงผล (ค่าที่บันทึก):</span>
-            </label>
-            <div class="grid grid-cols-2 gap-1.5 bg-[#071a33] p-1 rounded-xl border border-sky-500/30">
-              <button id="btnUnitPercent" onclick="setMetricUnit('percent')" class="py-1.5 text-xs font-bold rounded-lg transition shadow-sm bg-sky-600 text-white">
-                ระดับความสูง %
-              </button>
-              <button id="btnUnitMeter" onclick="setMetricUnit('meter')" class="py-1.5 text-xs font-bold rounded-lg transition text-sky-200 hover:text-white">
-                ระดับความสูง m
-              </button>
-            </div>
-          </div>
-
-          <!-- Reset Filter Button -->
-          <div class="md:col-span-2 flex flex-col justify-end">
-            <label class="block text-xs font-bold text-transparent mb-1.5 opacity-0 md:opacity-100">
-              <span>รีเซ็ต:</span>
-            </label>
-            <button onclick="resetFiltersToActiveData()" class="w-full py-2 px-3 bg-[#0f3460] hover:bg-sky-600 text-white text-xs font-bold rounded-xl border border-sky-400/40 transition flex items-center justify-center gap-1.5 shadow-sm">
-              <i class="fa-solid fa-arrows-rotate text-cyan-300"></i>
-              <span>ช่วงที่มีข้อมูลจริง</span>
+      <!-- ================= CONTROLS & FILTER BAR (With Date Range & Comparison Mode) ================= -->
+      <section class="navy-block rounded-2xl shadow-lg p-4 sm:p-5 no-print text-white space-y-4">
+        
+        <!-- Top Toolbar: Mode Switcher & Unit Switcher -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-sky-500/20">
+          <!-- Mode Tabs -->
+          <div class="flex items-center gap-1.5 bg-[#061b36] p-1.5 rounded-xl border border-sky-500/30">
+            <button id="btnModeRange" onclick="setDashboardMode('range')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition shadow-sm bg-sky-600 text-white flex items-center gap-2">
+              <i class="fa-regular fa-calendar-days"></i>
+              <span>ดูข้อมูลรายวัน / ช่วงวันที่</span>
+            </button>
+            <button id="btnModeCompare" onclick="setDashboardMode('compare')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition text-sky-200 hover:text-white flex items-center gap-2">
+              <i class="fa-solid fa-code-compare"></i>
+              <span>เปรียบเทียบข้อมูล 2 ชุด</span>
             </button>
           </div>
 
+          <!-- Unit Selector (% vs m) -->
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold text-sky-200">หน่วย:</span>
+            <div class="flex items-center bg-[#061b36] p-1 rounded-xl border border-sky-500/30">
+              <button id="btnUnitPercent" onclick="setMetricUnit('percent')" class="px-3 py-1.5 text-xs font-bold rounded-lg transition shadow-sm bg-sky-600 text-white">
+                % (ความสูง)
+              </button>
+              <button id="btnUnitMeter" onclick="setMetricUnit('meter')" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-sky-200 hover:text-white">
+                m (เมตร)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <!-- Quick 24H Shift Chips -->
-        <div class="mt-3 pt-3 border-t border-sky-500/20 flex flex-wrap items-center gap-2 text-xs">
-          <span class="text-sky-200 font-semibold">ตัวเลือกช่วงเวลาด่วน:</span>
-          <button onclick="setShiftRange('all', 'all')" class="px-2.5 py-1 bg-[#0c2a4d] hover:bg-sky-600 text-white rounded-lg border border-sky-500/40 transition font-medium">
-            🕒 ทั้งวัน 24 ชม. (00:00 - 23:00)
-          </button>
-          <button onclick="setShiftRange('00:00', '08:00')" class="px-2.5 py-1 bg-[#0c2a4d] hover:bg-sky-600 text-white rounded-lg border border-sky-500/40 transition font-medium">
-            🌙 กะดึก (00:00 - 08:00)
-          </button>
-          <button onclick="setShiftRange('08:00', '16:00')" class="px-2.5 py-1 bg-[#0c2a4d] hover:bg-sky-600 text-white rounded-lg border border-sky-500/40 transition font-medium">
-            ☀️ กะเช้า (08:00 - 16:00)
-          </button>
-          <button onclick="setShiftRange('16:00', '23:00')" class="px-2.5 py-1 bg-[#0c2a4d] hover:bg-sky-600 text-white rounded-lg border border-sky-500/40 transition font-medium">
-            ⛅ กะบ่าย (16:00 - 23:00)
-          </button>
+        <!-- ================= MODE 1: DATE RANGE SELECTOR ================= -->
+        <div id="modeRangeControls" class="space-y-3">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+            
+            <!-- Date Range Selector: Start Date to End Date -->
+            <div class="md:col-span-6">
+              <label class="block text-xs font-bold text-white mb-1.5 flex items-center gap-1.5">
+                <i class="fa-regular fa-calendar text-cyan-400"></i>
+                <span>เลือกช่วงวันที่ (เริ่มต้น - ถึงวันที่):</span>
+              </label>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <select id="startDateSelect" onchange="onDateRangeChanged()" class="w-full bg-[#071d37] border border-sky-500/40 text-white text-xs sm:text-sm rounded-xl px-3 py-2 font-medium focus:ring-2 focus:ring-cyan-400">
+                    <option value="">วันที่เริ่มต้น...</option>
+                  </select>
+                </div>
+                <div>
+                  <select id="endDateSelect" onchange="onDateRangeChanged()" class="w-full bg-[#071d37] border border-sky-500/40 text-white text-xs sm:text-sm rounded-xl px-3 py-2 font-medium focus:ring-2 focus:ring-cyan-400">
+                    <option value="">ถึงวันที่...</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Time Range (00:00 to 23:00) -->
+            <div class="md:col-span-4">
+              <label class="block text-xs font-bold text-white mb-1.5 flex items-center gap-1.5">
+                <i class="fa-regular fa-clock text-cyan-400"></i>
+                <span>เลือกช่วงเวลา:</span>
+              </label>
+              <div class="flex items-center gap-2">
+                <select id="startTimeSelect" onchange="onTimeRangeChanged()" class="w-full bg-[#071d37] border border-sky-500/40 text-white text-xs sm:text-sm rounded-xl px-2.5 py-2 font-medium focus:ring-2 focus:ring-cyan-400">
+                  <option value="all">ตั้งแต่ต้น (00:00)</option>
+                </select>
+                <span class="text-sky-300 font-bold text-xs">ถึง</span>
+                <select id="endTimeSelect" onchange="onTimeRangeChanged()" class="w-full bg-[#071d37] border border-sky-500/40 text-white text-xs sm:text-sm rounded-xl px-2.5 py-2 font-medium focus:ring-2 focus:ring-cyan-400">
+                  <option value="all">เวลาล่าสุด (23:00)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Reset Filter Button -->
+            <div class="md:col-span-2 flex flex-col justify-end">
+              <button onclick="resetFiltersToActiveData()" class="w-full py-2.5 px-3 bg-[#0f3460] hover:bg-sky-600 text-white text-xs font-bold rounded-xl border border-sky-400/40 transition flex items-center justify-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-arrows-rotate text-cyan-300"></i>
+                <span>วันล่าสุดที่มีข้อมูล</span>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Quick Shift Chips for Range Mode -->
+          <div class="pt-2 border-t border-sky-500/20 flex flex-wrap items-center gap-2 text-xs">
+            <span class="text-sky-200 font-semibold">ตัวเลือกกะด่วน:</span>
+            <button onclick="setShiftRange('all', 'all')" class="px-2.5 py-1 bg-[#0c2a4d] hover:bg-sky-600 text-white rounded-lg border border-sky-500/40 transition font-medium">
+              🕒 ทั้งวัน 24 ชม. (00:00 - 23:00)
+            </button>
+            <button onclick="setShiftRange('00:00', '08:00')" class="px-2.5 py-1 bg-[#0c2a4d] hover:bg-sky-600 text-white rounded-lg border border-sky-500/40 transition font-medium">
+              🌙 กะดึก (00:00 - 08:00)
+            </button>
+            <button onclick="setShiftRange('08:00', '16:00')" class="px-2.5 py-1 bg-[#0c2a4d] hover:bg-sky-600 text-white rounded-lg border border-sky-500/40 transition font-medium">
+              ☀️ กะเช้า (08:00 - 16:00)
+            </button>
+            <button onclick="setShiftRange('16:00', '23:00')" class="px-2.5 py-1 bg-[#0c2a4d] hover:bg-sky-600 text-white rounded-lg border border-sky-500/40 transition font-medium">
+              ⛅ กะบ่าย (16:00 - 23:00)
+            </button>
+          </div>
         </div>
+
+        <!-- ================= MODE 2: COMPARISON CONTROLS (Requirement 3) ================= -->
+        <div id="modeCompareControls" class="hidden space-y-3">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <!-- Dataset 1 Selector (Cyan Color) -->
+            <div class="bg-[#071e3b] p-3.5 rounded-xl border border-cyan-400/40 space-y-2.5">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-cyan-300 flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span>
+                  <span>ชุดข้อมูลที่ 1 (กราฟสีฟ้า)</span>
+                </span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
+                <div class="sm:col-span-6">
+                  <label class="block text-[11px] text-sky-200 mb-1">เลือกวันที่:</label>
+                  <select id="compareDate1Select" onchange="renderDashboard()" class="w-full bg-[#0a2547] border border-cyan-500/40 text-white text-xs rounded-lg px-2.5 py-1.5 font-medium">
+                    <!-- Populated dynamically -->
+                  </select>
+                </div>
+                <div class="sm:col-span-6">
+                  <label class="block text-[11px] text-sky-200 mb-1">ช่วงเวลา (เริ่ม - สิ้นสุด):</label>
+                  <div class="flex items-center gap-1.5">
+                    <select id="compareStartTime1Select" onchange="renderDashboard()" class="w-full bg-[#0a2547] border border-cyan-500/40 text-white text-xs rounded-lg px-1.5 py-1.5">
+                      <!-- Filled dynamically -->
+                    </select>
+                    <span class="text-cyan-300 text-xs">-</span>
+                    <select id="compareEndTime1Select" onchange="renderDashboard()" class="w-full bg-[#0a2547] border border-cyan-500/40 text-white text-xs rounded-lg px-1.5 py-1.5">
+                      <!-- Filled dynamically -->
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dataset 2 Selector (Amber/Gold Color) -->
+            <div class="bg-[#071e3b] p-3.5 rounded-xl border border-amber-400/40 space-y-2.5">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-amber-300 flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span>
+                  <span>ชุดข้อมูลที่ 2 (กราฟสีส้ม/ทอง)</span>
+                </span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
+                <div class="sm:col-span-6">
+                  <label class="block text-[11px] text-sky-200 mb-1">เลือกวันที่:</label>
+                  <select id="compareDate2Select" onchange="renderDashboard()" class="w-full bg-[#0a2547] border border-amber-500/40 text-white text-xs rounded-lg px-2.5 py-1.5 font-medium">
+                    <!-- Populated dynamically -->
+                  </select>
+                </div>
+                <div class="sm:col-span-6">
+                  <label class="block text-[11px] text-sky-200 mb-1">ช่วงเวลา (เริ่ม - สิ้นสุด):</label>
+                  <div class="flex items-center gap-1.5">
+                    <select id="compareStartTime2Select" onchange="renderDashboard()" class="w-full bg-[#0a2547] border border-amber-500/40 text-white text-xs rounded-lg px-1.5 py-1.5">
+                      <!-- Filled dynamically -->
+                    </select>
+                    <span class="text-amber-300 text-xs">-</span>
+                    <select id="compareEndTime2Select" onchange="renderDashboard()" class="w-full bg-[#0a2547] border border-amber-500/40 text-white text-xs rounded-lg px-1.5 py-1.5">
+                      <!-- Filled dynamically -->
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </section>
 
-      <!-- ================= MAIN SECTION: CHART & SUMMARY (Navy Blue with Pure White Text) ================= -->
+      <!-- ================= MAIN SECTION: CHART & SUMMARY ================= -->
       <section class="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
-        <!-- LEFT: Interactive Trend Line Chart (Navy Block) -->
+        <!-- LEFT: Interactive Chart (Requirement 2: Toggle Line vs Bar) -->
         <div class="lg:col-span-8 navy-block rounded-2xl p-5 sm:p-6 shadow-xl flex flex-col justify-between text-white">
           <div>
+            <!-- Chart Header with Type Switcher & Table Toggle -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-sky-500/20">
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-sky-950 text-cyan-300 flex items-center justify-center text-lg border border-sky-400/40 shadow-inner">
-                  <i class="fa-solid fa-chart-line"></i>
+                  <i id="chartHeaderIcon" class="fa-solid fa-chart-line"></i>
                 </div>
                 <div>
                   <h3 id="chartTitle" class="text-lg sm:text-xl font-bold text-white tracking-wide">
-                    แนวโน้มระดับบ่อ EQ วันที่ 26 กันยายน 2569
+                    แนวโน้มระดับบ่อ EQ
                   </h3>
-                  <p class="text-xs text-sky-200">กราฟเส้นแสดงระดับความสูงตามเวลาที่บันทึก (00:00 - 23:00 น.)</p>
+                  <p id="chartSubtitle" class="text-xs text-sky-200">แสดงข้อมูลระดับความสูงตามเวลาที่บันทึก</p>
                 </div>
               </div>
 
-              <!-- Legend and Switch view -->
-              <div class="flex items-center gap-3">
-                <div class="flex items-center gap-2 text-xs font-bold text-white bg-sky-950/80 px-3.5 py-1.5 rounded-full border border-sky-400/40">
-                  <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block shadow-sm"></span>
-                  <span id="legendText">ระดับบ่อ EQ</span>
+              <!-- Controls: Chart Type Toggle (Line vs Bar) & Table View -->
+              <div class="flex flex-wrap items-center gap-2.5">
+                
+                <!-- Chart Type Switcher (Requirement 2) -->
+                <div class="flex items-center bg-[#061b36] p-1 rounded-xl border border-sky-500/30">
+                  <button id="btnChartLine" onclick="setChartType('line')" title="แสดงเป็นกราฟเส้น" class="px-3 py-1 text-xs font-bold rounded-lg transition shadow-sm bg-sky-600 text-white flex items-center gap-1.5">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>กราฟเส้น</span>
+                  </button>
+                  <button id="btnChartBar" onclick="setChartType('bar')" title="แสดงเป็นกราฟแท่ง" class="px-3 py-1 text-xs font-bold rounded-lg transition text-sky-200 hover:text-white flex items-center gap-1.5">
+                    <i class="fa-solid fa-chart-simple"></i>
+                    <span>กราฟแท่ง</span>
+                  </button>
                 </div>
-                <button onclick="toggleDataTable()" class="text-xs px-3 py-1.5 text-white hover:text-cyan-200 bg-[#0c2a4d] hover:bg-sky-600 border border-sky-500/40 rounded-xl transition no-print font-bold shadow-sm">
-                  <i class="fa-solid fa-table-list mr-1"></i>
-                  <span>ดูตารางตัวเลข</span>
+
+                <!-- Table toggle -->
+                <button onclick="toggleDataTable()" class="text-xs px-3 py-1.5 text-white hover:text-cyan-200 bg-[#0c2a4d] hover:bg-sky-600 border border-sky-500/40 rounded-xl transition no-print font-bold shadow-sm flex items-center gap-1">
+                  <i class="fa-solid fa-table-list"></i>
+                  <span class="hidden sm:inline">ตารางตัวเลข</span>
                 </button>
               </div>
             </div>
 
+            <!-- Legend Badge Bar -->
+            <div id="chartLegendContainer" class="mt-3 flex flex-wrap items-center gap-3 text-xs">
+              <!-- Dynamically populated legends -->
+            </div>
+
             <!-- Chart Canvas Container -->
-            <div class="relative w-full mt-4 h-[380px] sm:h-[430px]">
+            <div class="relative w-full mt-3 h-[380px] sm:h-[430px]">
               <canvas id="eqLevelChart"></canvas>
             </div>
           </div>
@@ -445,18 +545,18 @@
           <div class="mt-4 pt-3 border-t border-sky-500/20 flex flex-wrap items-center justify-between text-xs text-sky-200 gap-2">
             <span class="flex items-center gap-1.5">
               <i class="fa-solid fa-circle-check text-emerald-400"></i>
-              <span class="text-white font-medium">ข้อมูลเชื่อมต่อแบบ Real-time จาก Google Sheet โดยอัตโนมัติ</span>
+              <span id="chartFooterNote" class="text-white font-medium">ข้อมูลเชื่อมต่อแบบ Real-time จาก Google Sheet โดยอัตโนมัติ</span>
             </span>
             <span id="chartMinMaxSummary" class="font-bold text-white">สูงสุด: - | ต่ำสุด: -</span>
           </div>
 
-          <!-- Collapsible Raw Data Table (Navy Theme) -->
+          <!-- Collapsible Raw Data Table -->
           <div id="dataTableContainer" class="hidden mt-4 pt-4 border-t border-sky-500/30 overflow-x-auto">
-            <h4 class="text-sm font-bold text-white mb-2">ตารางบันทึกรายชั่วโมงประจำวัน (00:00 - 23:00 น.)</h4>
+            <h4 class="text-sm font-bold text-white mb-2">ตารางบันทึกค่ารายชั่วโมง</h4>
             <table class="w-full text-left text-xs border-collapse">
               <thead>
-                <tr class="bg-[#071e3b] text-sky-200 font-bold border border-sky-500/30">
-                  <th class="p-2.5 border border-sky-500/20">เวลา</th>
+                <tr id="dataTableHeadRow" class="bg-[#071e3b] text-sky-200 font-bold border border-sky-500/30">
+                  <th class="p-2.5 border border-sky-500/20">วัน/เวลา</th>
                   <th class="p-2.5 border border-sky-500/20">ระดับความสูง %</th>
                   <th class="p-2.5 border border-sky-500/20">ระดับความสูง m</th>
                   <th class="p-2.5 border border-sky-500/20">สถานะบันทึก</th>
@@ -469,10 +569,10 @@
           </div>
         </div>
 
-        <!-- RIGHT: Summary & Operational Actions (Navy Blocks with Pure White Text) -->
+        <!-- RIGHT: Summary & Operational Actions -->
         <div class="lg:col-span-4 space-y-5 flex flex-col text-white">
 
-          <!-- Card 1: สรุปภาพรวม (Navy Block) -->
+          <!-- Card 1: สรุปภาพรวม -->
           <div class="navy-block rounded-2xl p-5 sm:p-6 shadow-xl relative overflow-hidden">
             <div class="flex items-center gap-3 pb-3 border-b border-sky-500/20">
               <div class="w-9 h-9 rounded-xl bg-sky-950 text-cyan-300 flex items-center justify-center text-lg border border-sky-400/40">
@@ -482,24 +582,24 @@
             </div>
 
             <div class="mt-4 space-y-4">
-              <!-- Headline Dynamic in Navy Card -->
+              <!-- Headline Dynamic -->
               <div class="bg-[#061b36] rounded-2xl p-4 border border-sky-400/30 text-center shadow-inner">
                 <p id="summaryHeadline" class="text-base sm:text-lg font-extrabold text-white leading-snug">
                   “ระดับบ่อ EQ มีแนวโน้มลดลงอย่างต่อเนื่อง”
                 </p>
               </div>
 
-              <!-- Main Comparison Box with Big Arrow -->
+              <!-- Main Comparison Box -->
               <div class="flex items-center justify-center gap-4 py-2">
                 <div class="w-14 h-14 rounded-2xl bg-emerald-950/80 text-emerald-400 flex items-center justify-center text-3xl shadow-sm border border-emerald-500/40 flex-shrink-0" id="summaryTrendIcon">
                   <i class="fa-solid fa-arrow-down-long"></i>
                 </div>
                 <div class="text-left">
                   <p id="summaryFromTo" class="text-base sm:text-lg font-extrabold text-white font-sans">
-                    จาก 89.30% → 90.00%
+                    จาก - → -
                   </p>
                   <p id="summaryDiffDetail" class="text-xs sm:text-sm text-cyan-300 font-bold mt-0.5">
-                    เปลี่ยนแปลงตามข้อมูลจริงใน Google Sheet
+                    กำลังคำนวณ...
                   </p>
                 </div>
               </div>
@@ -507,18 +607,18 @@
               <!-- Key Stats Comparison -->
               <div class="grid grid-cols-2 gap-2 text-center text-xs">
                 <div class="bg-[#061b36] p-2.5 rounded-xl border border-sky-500/30">
-                  <span class="text-sky-200 block font-medium">ค่าแรกที่บันทึก</span>
-                  <span id="summaryStartVal" class="text-sm font-extrabold text-white font-sans">89.30%</span>
+                  <span id="summaryStat1Label" class="text-sky-200 block font-medium">ค่าแรกที่บันทึก</span>
+                  <span id="summaryStartVal" class="text-sm font-extrabold text-white font-sans">-</span>
                 </div>
                 <div class="bg-[#061b36] p-2.5 rounded-xl border border-sky-500/30">
-                  <span class="text-sky-200 block font-medium">ค่าล่าสุด</span>
-                  <span id="summaryEndVal" class="text-sm font-extrabold text-white font-sans">90.00%</span>
+                  <span id="summaryStat2Label" class="text-sky-200 block font-medium">ค่าล่าสุด</span>
+                  <span id="summaryEndVal" class="text-sm font-extrabold text-white font-sans">-</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Card 2: การดำเนินการและติดตามเฝ้าระวัง (Navy Block with Pure White Text) -->
+          <!-- Card 2: การดำเนินการและติดตามเฝ้าระวัง -->
           <div class="navy-block rounded-2xl p-5 sm:p-6 shadow-xl flex-1 flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between pb-3 border-b border-sky-500/20">
@@ -533,7 +633,7 @@
                 </button>
               </div>
 
-              <!-- 3 Standard Protocols (Navy background with White Text) -->
+              <!-- 3 Standard Protocols -->
               <div id="actionList" class="mt-4 space-y-3.5">
                 
                 <!-- Action 1 -->
@@ -616,11 +716,10 @@
 
       </section>
 
-      <!-- ================= BOTTOM BANNER / FOOTER (Navy Blue Block with White Text) ================= -->
+      <!-- ================= BOTTOM BANNER / FOOTER ================= -->
       <footer class="navy-block rounded-2xl shadow-xl p-5 sm:p-6 text-white relative overflow-hidden wave-pattern">
         <div class="flex flex-col md:flex-row items-center justify-between gap-5 relative z-10">
           
-          <!-- Left slogan -->
           <div class="flex items-center gap-3.5">
             <div class="w-11 h-11 rounded-2xl bg-sky-950 text-emerald-400 flex items-center justify-center text-2xl border border-sky-400/40 shadow-inner">
               <i class="fa-solid fa-leaf"></i>
@@ -631,10 +730,8 @@
             </div>
           </div>
 
-          <!-- Right 3 Pillars Badges -->
           <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
             
-            <!-- Pillar 1 -->
             <div class="flex items-center gap-2.5 bg-[#061b36] px-4 py-2.5 rounded-xl border border-sky-400/30 shadow-sm">
               <div class="w-7 h-7 rounded-full bg-cyan-400 text-slate-950 flex items-center justify-center text-xs font-extrabold">
                 <i class="fa-solid fa-droplet"></i>
@@ -645,7 +742,6 @@
               </div>
             </div>
 
-            <!-- Pillar 2 -->
             <div class="flex items-center gap-2.5 bg-[#061b36] px-4 py-2.5 rounded-xl border border-sky-400/30 shadow-sm">
               <div class="w-7 h-7 rounded-full bg-emerald-400 text-slate-950 flex items-center justify-center text-xs font-extrabold">
                 <i class="fa-solid fa-seedling"></i>
@@ -656,7 +752,6 @@
               </div>
             </div>
 
-            <!-- Pillar 3 -->
             <div class="flex items-center gap-2.5 bg-[#061b36] px-4 py-2.5 rounded-xl border border-sky-400/30 shadow-sm">
               <div class="w-7 h-7 rounded-full bg-indigo-300 text-slate-950 flex items-center justify-center text-xs font-extrabold">
                 <i class="fa-solid fa-users"></i>
@@ -682,19 +777,35 @@
     const SHEET_ID = '1CVnXQY94Vl-jb3ppmoUgEcz4xNlohw9lQQ_anq1wEH4';
     const PASSWORD_CORRECT = 'UU@12345';
     
-    // Global State
+    // Global Application State
     let parsedSheetData = {
-      dates: [],
-      rowsByDate: {}
+      dates: [], // ["26/9/2569", "27/9/2569", ...]
+      rowsByDate: {} // { "26/9/2569": [ { time: "00:00", percent: 89.3, meter: null }, ... ] }
     };
-    let selectedDate = '';
+
+    // Modes & Preferences
+    let currentMode = 'range'; // 'range' (single or date range) or 'compare' (comparison of 2 sets)
+    let chartType = 'line'; // 'line' or 'bar'
     let selectedUnit = 'percent'; // 'percent' or 'meter'
+
+    // Mode 1: Range Filters
+    let selectedStartDate = '';
+    let selectedEndDate = '';
     let selectedStartTime = 'all';
     let selectedEndTime = 'all';
+
+    // Mode 2: Comparison Filters
+    let compareDate1 = '';
+    let compareStartTime1 = 'all';
+    let compareEndTime1 = 'all';
+    let compareDate2 = '';
+    let compareStartTime2 = 'all';
+    let compareEndTime2 = 'all';
+
     let chartInstance = null;
     let autoRefreshTimer = null;
 
-    // Authentication Logic (Requirement 6)
+    // Authentication Logic
     function checkAuth() {
       const isAuth = sessionStorage.getItem('water_eq_auth');
       if (isAuth === 'true') {
@@ -744,36 +855,46 @@
       window.location.reload();
     }
 
-    // Thai Date Formatter (e.g. 26/9/2569 -> 26 กันยายน 2569)
+    // Thai Date Formatter & Parsers
     const thaiMonths = [
       'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
       'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
     ];
+    const thaiMonthsShort = [
+      'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.',
+      'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'
+    ];
 
-    function formatThaiDateDisplay(dateStr) {
-      if (!dateStr) return '';
+    function parseThaiDate(dateStr) {
+      if (!dateStr) return { day: 1, month: 1, year: 2569, sortKey: 0 };
       const parts = dateStr.split(/[\/\-]/);
+      let day = 1, month = 1, year = 2569;
       if (parts.length === 3) {
-        let day = parseInt(parts[0], 10);
-        let month = parseInt(parts[1], 10);
-        let year = parseInt(parts[2], 10);
-        if (parts[0].length === 4) {
+        if (parts[0].length === 4) { // YYYY-MM-DD
           year = parseInt(parts[0], 10);
           month = parseInt(parts[1], 10);
           day = parseInt(parts[2], 10);
+        } else { // DD/MM/YYYY
+          day = parseInt(parts[0], 10);
+          month = parseInt(parts[1], 10);
+          year = parseInt(parts[2], 10);
         }
         if (year < 2400) year += 543;
-        const monthName = thaiMonths[month - 1] || month;
-        return `${day} ${monthName} ${year}`;
       }
-      return dateStr;
+      return { day, month, year, sortKey: year * 10000 + month * 100 + day };
     }
 
-    // Time Normalizer ("8.00" -> "08:00", "9:00" -> "09:00", "00:00" -> "00:00")
+    function formatThaiDateDisplay(dateStr, isShort = false) {
+      if (!dateStr) return '';
+      const p = parseThaiDate(dateStr);
+      const mList = isShort ? thaiMonthsShort : thaiMonths;
+      const mName = mList[p.month - 1] || p.month;
+      return `${p.day} ${mName} ${p.year}`;
+    }
+
     function normalizeTime(t) {
       if (!t) return '';
-      t = t.toString().trim();
-      t = t.replace('.', ':');
+      t = t.toString().trim().replace('.', ':');
       const parts = t.split(':');
       if (parts.length >= 1) {
         let h = parts[0].padStart(2, '0');
@@ -831,7 +952,7 @@
       document.getElementById('lastUpdatedText').innerText = `อัปเดตล่าสุด: ${timeStr} น.`;
     }
 
-    // Process Sheet Structure (Robust support for 00:00 - 23:00)
+    // Process Sheet Structure
     function processGvizData(gvizObj) {
       if (!gvizObj || !gvizObj.table || !gvizObj.table.rows) return;
       const rows = gvizObj.table.rows;
@@ -861,20 +982,14 @@
         const cells = rows[r].c;
         if (!cells) continue;
 
-        // Column A: Time
         const cellA = cells[0];
         if (cellA && (cellA.v !== null || cellA.f)) {
           const rawTime = cellA.f || cellA.v;
-          if (rawTime) {
-            const normT = normalizeTime(rawTime);
-            // Stop/ignore duplicate template rows after 23:00 if they don't have metric
-            currentTime = normT;
-          }
+          if (rawTime) currentTime = normalizeTime(rawTime);
         }
 
         if (!currentTime) continue;
 
-        // Column B: Metric name
         const cellB = cells[1];
         let metricType = '';
         if (cellB && (cellB.v || cellB.f)) {
@@ -883,7 +998,6 @@
           else if (bVal.includes('m') || bVal.includes('เมตร')) metricType = 'meter';
         }
 
-        // Check if any date in this row has data
         let hasAnyData = false;
         dateCols.forEach(d => {
           const cellVal = cells[d.colIndex];
@@ -892,7 +1006,7 @@
           }
         });
 
-        // Ignore rows that neither have a metric label nor any data
+        // Filter out leftover template rows that lack metrics and values
         if (!metricType && !hasAnyData) {
           continue;
         }
@@ -924,114 +1038,186 @@
         });
       }
 
-      // Sort entries by time from 00:00 to 23:00
+      // Sort entries by 24h chronological order
       dateCols.forEach(d => {
         parsedSheetData.rowsByDate[d.dateStr].sort((a, b) => a.time.localeCompare(b.time));
       });
 
-      updateDateDropdown();
+      populateAllDropdowns();
       renderDashboard();
     }
 
-    function updateDateDropdown() {
-      const select = document.getElementById('dateSelect');
-      const currentSelected = selectedDate || select.value;
-      select.innerHTML = '';
+    // Populate Dropdown Menus
+    function populateAllDropdowns() {
+      const dates = parsedSheetData.dates;
+      if (dates.length === 0) return;
 
-      if (parsedSheetData.dates.length === 0) {
-        select.innerHTML = '<option value="">ไม่มีข้อมูลวันที่</option>';
-        return;
-      }
-
-      let defaultDate = parsedSheetData.dates[0];
-      for (let i = parsedSheetData.dates.length - 1; i >= 0; i--) {
-        const d = parsedSheetData.dates[i];
+      // Find latest date with recorded data
+      let latestDateWithData = dates[0];
+      for (let i = dates.length - 1; i >= 0; i--) {
+        const d = dates[i];
         const entries = parsedSheetData.rowsByDate[d] || [];
-        const hasData = entries.some(e => e.percent !== null || e.meter !== null);
-        if (hasData) {
-          defaultDate = d;
+        if (entries.some(e => e.percent !== null || e.meter !== null)) {
+          latestDateWithData = d;
           break;
         }
       }
 
-      parsedSheetData.dates.forEach(d => {
-        const opt = document.createElement('option');
-        opt.value = d;
-        opt.innerText = formatThaiDateDisplay(d) + (d === defaultDate ? ' (ล่าสุด)' : '');
-        select.appendChild(opt);
+      // 1. Populate Mode 1: Start Date & End Date
+      const startSelect = document.getElementById('startDateSelect');
+      const endSelect = document.getElementById('endDateSelect');
+      startSelect.innerHTML = '';
+      endSelect.innerHTML = '';
+
+      dates.forEach(d => {
+        const opt1 = document.createElement('option');
+        opt1.value = d;
+        opt1.innerText = formatThaiDateDisplay(d) + (d === latestDateWithData ? ' (ล่าสุด)' : '');
+        startSelect.appendChild(opt1);
+
+        const opt2 = document.createElement('option');
+        opt2.value = d;
+        opt2.innerText = formatThaiDateDisplay(d) + (d === latestDateWithData ? ' (ล่าสุด)' : '');
+        endSelect.appendChild(opt2);
       });
 
-      if (currentSelected && parsedSheetData.dates.includes(currentSelected)) {
-        select.value = currentSelected;
-        selectedDate = currentSelected;
-      } else {
-        select.value = defaultDate;
-        selectedDate = defaultDate;
+      if (!selectedStartDate || !dates.includes(selectedStartDate)) {
+        selectedStartDate = latestDateWithData;
+      }
+      if (!selectedEndDate || !dates.includes(selectedEndDate)) {
+        selectedEndDate = latestDateWithData;
       }
 
-      updateTimeDropdowns();
-    }
+      startSelect.value = selectedStartDate;
+      endSelect.value = selectedEndDate;
 
-    function updateTimeDropdowns() {
-      const startSelect = document.getElementById('startTimeSelect');
-      const endSelect = document.getElementById('endTimeSelect');
-      const dataForDate = parsedSheetData.rowsByDate[selectedDate] || [];
+      // 2. Populate Mode 2: Comparison Dates
+      const comp1Select = document.getElementById('compareDate1Select');
+      const comp2Select = document.getElementById('compareDate2Select');
+      comp1Select.innerHTML = '';
+      comp2Select.innerHTML = '';
 
-      const timeList = dataForDate.map(e => e.time);
-      
-      startSelect.innerHTML = '<option value="all">ตั้งแต่เวลาแรก (00:00)</option>';
-      endSelect.innerHTML = '<option value="all">ถึงเวลาล่าสุด (23:00)</option>';
+      dates.forEach(d => {
+        const optA = document.createElement('option');
+        optA.value = d;
+        optA.innerText = formatThaiDateDisplay(d);
+        comp1Select.appendChild(optA);
 
-      timeList.forEach(t => {
-        const optStart = document.createElement('option');
-        optStart.value = t;
-        optStart.innerText = `${t} น.`;
-        startSelect.appendChild(optStart);
-
-        const optEnd = document.createElement('option');
-        optEnd.value = t;
-        optEnd.innerText = `${t} น.`;
-        endSelect.appendChild(optEnd);
+        const optB = document.createElement('option');
+        optB.value = d;
+        optB.innerText = formatThaiDateDisplay(d);
+        comp2Select.appendChild(optB);
       });
 
-      startSelect.value = selectedStartTime;
-      endSelect.value = selectedEndTime;
+      // Default comparison: compare previous date with latest date if available
+      const latestIdx = dates.indexOf(latestDateWithData);
+      compareDate1 = latestDateWithData;
+      compareDate2 = latestIdx > 0 ? dates[latestIdx - 1] : latestDateWithData;
+
+      comp1Select.value = compareDate1;
+      comp2Select.value = compareDate2;
+
+      // 3. Populate Time Selectors
+      populateTimeOptions();
     }
 
-    function onDateChanged() {
-      selectedDate = document.getElementById('dateSelect').value;
-      selectedStartTime = 'all';
-      selectedEndTime = 'all';
-      updateTimeDropdowns();
+    function populateTimeOptions() {
+      // Gather standard times (usually 00:00 - 23:00)
+      const allTimes = new Set();
+      parsedSheetData.dates.forEach(d => {
+        (parsedSheetData.rowsByDate[d] || []).forEach(e => allTimes.add(e.time));
+      });
+      const timeList = Array.from(allTimes).sort();
+
+      const fillTimeSelect = (elId, defaultFirstText) => {
+        const sel = document.getElementById(elId);
+        sel.innerHTML = `<option value="all">${defaultFirstText}</option>`;
+        timeList.forEach(t => {
+          const opt = document.createElement('option');
+          opt.value = t;
+          opt.innerText = `${t} น.`;
+          sel.appendChild(opt);
+        });
+      };
+
+      fillTimeSelect('startTimeSelect', 'ตั้งแต่เวลาแรก (00:00)');
+      fillTimeSelect('endTimeSelect', 'ถึงเวลาล่าสุด (23:00)');
+      fillTimeSelect('compareStartTime1Select', 'ตั้งแต่ต้น (00:00)');
+      fillTimeSelect('compareEndTime1Select', 'ถึงล่าสุด (23:00)');
+      fillTimeSelect('compareStartTime2Select', 'ตั้งแต่ต้น (00:00)');
+      fillTimeSelect('compareEndTime2Select', 'ถึงล่าสุด (23:00)');
+
+      document.getElementById('startTimeSelect').value = selectedStartTime;
+      document.getElementById('endTimeSelect').value = selectedEndTime;
+      document.getElementById('compareStartTime1Select').value = compareStartTime1;
+      document.getElementById('compareEndTime1Select').value = compareEndTime1;
+      document.getElementById('compareStartTime2Select').value = compareStartTime2;
+      document.getElementById('compareEndTime2Select').value = compareEndTime2;
+    }
+
+    // Filter Handlers
+    function setDashboardMode(mode) {
+      currentMode = mode;
+      const btnRange = document.getElementById('btnModeRange');
+      const btnCompare = document.getElementById('btnModeCompare');
+      const rangeCtrl = document.getElementById('modeRangeControls');
+      const compareCtrl = document.getElementById('modeCompareControls');
+
+      if (mode === 'range') {
+        btnRange.className = 'px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition shadow-sm bg-sky-600 text-white flex items-center gap-2';
+        btnCompare.className = 'px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition text-sky-200 hover:text-white flex items-center gap-2';
+        rangeCtrl.classList.remove('hidden');
+        compareCtrl.classList.add('hidden');
+      } else {
+        btnCompare.className = 'px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition shadow-sm bg-sky-600 text-white flex items-center gap-2';
+        btnRange.className = 'px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition text-sky-200 hover:text-white flex items-center gap-2';
+        compareCtrl.classList.remove('hidden');
+        rangeCtrl.classList.add('hidden');
+      }
+      renderDashboard();
+    }
+
+    function setChartType(type) {
+      chartType = type;
+      const btnLine = document.getElementById('btnChartLine');
+      const btnBar = document.getElementById('btnChartBar');
+      const icon = document.getElementById('chartHeaderIcon');
+
+      if (type === 'line') {
+        btnLine.className = 'px-3 py-1 text-xs font-bold rounded-lg transition shadow-sm bg-sky-600 text-white flex items-center gap-1.5';
+        btnBar.className = 'px-3 py-1 text-xs font-bold rounded-lg transition text-sky-200 hover:text-white flex items-center gap-1.5';
+        icon.className = 'fa-solid fa-chart-line';
+      } else {
+        btnBar.className = 'px-3 py-1 text-xs font-bold rounded-lg transition shadow-sm bg-sky-600 text-white flex items-center gap-1.5';
+        btnLine.className = 'px-3 py-1 text-xs font-bold rounded-lg transition text-sky-200 hover:text-white flex items-center gap-1.5';
+        icon.className = 'fa-solid fa-chart-simple';
+      }
+      renderDashboard();
+    }
+
+    function setMetricUnit(unit) {
+      selectedUnit = unit;
+      const btnP = document.getElementById('btnUnitPercent');
+      const btnM = document.getElementById('btnUnitMeter');
+      if (unit === 'percent') {
+        btnP.className = 'px-3 py-1.5 text-xs font-bold rounded-lg transition shadow-sm bg-sky-600 text-white';
+        btnM.className = 'px-3 py-1.5 text-xs font-bold rounded-lg transition text-sky-200 hover:text-white';
+      } else {
+        btnM.className = 'px-3 py-1.5 text-xs font-bold rounded-lg transition shadow-sm bg-sky-600 text-white';
+        btnP.className = 'px-3 py-1.5 text-xs font-bold rounded-lg transition text-sky-200 hover:text-white';
+      }
+      renderDashboard();
+    }
+
+    function onDateRangeChanged() {
+      selectedStartDate = document.getElementById('startDateSelect').value;
+      selectedEndDate = document.getElementById('endDateSelect').value;
       renderDashboard();
     }
 
     function onTimeRangeChanged() {
       selectedStartTime = document.getElementById('startTimeSelect').value;
       selectedEndTime = document.getElementById('endTimeSelect').value;
-      renderDashboard();
-    }
-
-    function setMetricUnit(unit) {
-      selectedUnit = unit;
-      const btnPercent = document.getElementById('btnUnitPercent');
-      const btnMeter = document.getElementById('btnUnitMeter');
-
-      if (unit === 'percent') {
-        btnPercent.className = 'py-1.5 text-xs font-bold rounded-lg transition shadow-sm bg-sky-600 text-white';
-        btnMeter.className = 'py-1.5 text-xs font-bold rounded-lg transition text-sky-200 hover:text-white';
-      } else {
-        btnMeter.className = 'py-1.5 text-xs font-bold rounded-lg transition shadow-sm bg-sky-600 text-white';
-        btnPercent.className = 'py-1.5 text-xs font-bold rounded-lg transition text-sky-200 hover:text-white';
-      }
-      renderDashboard();
-    }
-
-    function resetFiltersToActiveData() {
-      selectedStartTime = 'all';
-      selectedEndTime = 'all';
-      document.getElementById('startTimeSelect').value = 'all';
-      document.getElementById('endTimeSelect').value = 'all';
       renderDashboard();
     }
 
@@ -1043,67 +1229,139 @@
       renderDashboard();
     }
 
-    // Main Render Dashboard
-    function renderDashboard() {
-      if (!selectedDate || !parsedSheetData.rowsByDate[selectedDate]) return;
+    function resetFiltersToActiveData() {
+      // Find latest date with data
+      for (let i = parsedSheetData.dates.length - 1; i >= 0; i--) {
+        const d = parsedSheetData.dates[i];
+        const entries = parsedSheetData.rowsByDate[d] || [];
+        if (entries.some(e => e.percent !== null || e.meter !== null)) {
+          selectedStartDate = d;
+          selectedEndDate = d;
+          break;
+        }
+      }
+      selectedStartTime = 'all';
+      selectedEndTime = 'all';
+      document.getElementById('startDateSelect').value = selectedStartDate;
+      document.getElementById('endDateSelect').value = selectedEndDate;
+      document.getElementById('startTimeSelect').value = 'all';
+      document.getElementById('endTimeSelect').value = 'all';
+      renderDashboard();
+    }
 
-      const fullList = parsedSheetData.rowsByDate[selectedDate];
-      const thaiDate = formatThaiDateDisplay(selectedDate);
-      
-      // Update Headers
-      document.getElementById('headerDateDisplay').innerText = thaiDate;
-      document.getElementById('chartTitle').innerText = `แนวโน้มระดับบ่อ EQ วันที่ ${thaiDate}`;
+    // Helper: Filter records for a single date and time range
+    function getFilteredEntriesForDate(dateStr, startT, endT) {
+      const fullList = parsedSheetData.rowsByDate[dateStr] || [];
+      let sIdx = 0;
+      let eIdx = fullList.length - 1;
+
+      if (startT !== 'all') {
+        const idx = fullList.findIndex(e => e.time === startT);
+        if (idx !== -1) sIdx = idx;
+      }
+      if (endT !== 'all') {
+        const idx = fullList.findIndex(e => e.time === endT);
+        if (idx !== -1) eIdx = idx;
+      }
+
+      if (sIdx > eIdx) {
+        const temp = sIdx;
+        sIdx = eIdx;
+        eIdx = temp;
+      }
+
+      return fullList.slice(sIdx, eIdx + 1);
+    }
+
+    // Main Render Controller
+    function renderDashboard() {
+      if (currentMode === 'compare') {
+        renderComparisonMode();
+      } else {
+        renderRangeMode();
+      }
+      loadDailyNote();
+    }
+
+    // ================= RENDER MODE 1: SINGLE DATE / DATE RANGE =================
+    function renderRangeMode() {
       const unitSymbol = selectedUnit === 'percent' ? '%' : ' m';
       const unitLabel = selectedUnit === 'percent' ? 'จุดเปอร์เซ็นต์' : 'เมตร';
-      document.getElementById('legendText').innerText = `ระดับบ่อ EQ (${selectedUnit === 'percent' ? '%' : 'm'})`;
 
-      // Filter by Time Range
-      let startIndex = 0;
-      let endIndex = fullList.length - 1;
-
-      if (selectedStartTime !== 'all') {
-        const idx = fullList.findIndex(e => e.time === selectedStartTime);
-        if (idx !== -1) startIndex = idx;
-      }
-      if (selectedEndTime !== 'all') {
-        const idx = fullList.findIndex(e => e.time === selectedEndTime);
-        if (idx !== -1) endIndex = idx;
+      // Ensure chronological ordering of start and end date
+      const pStart = parseThaiDate(selectedStartDate);
+      const pEnd = parseThaiDate(selectedEndDate);
+      let sDate = selectedStartDate;
+      let eDate = selectedEndDate;
+      if (pStart.sortKey > pEnd.sortKey) {
+        sDate = selectedEndDate;
+        eDate = selectedStartDate;
       }
 
-      if (startIndex > endIndex) {
-        const temp = startIndex;
-        startIndex = endIndex;
-        endIndex = temp;
-      }
-
-      const filteredList = fullList.slice(startIndex, endIndex + 1);
-
-      // Points with actual data
-      const validPoints = filteredList.filter(e => {
-        const val = selectedUnit === 'percent' ? e.percent : e.meter;
-        return val !== null && val !== undefined;
+      // Find all dates within range
+      const inRangeDates = parsedSheetData.dates.filter(d => {
+        const p = parseThaiDate(d);
+        return p.sortKey >= parseThaiDate(sDate).sortKey && p.sortKey <= parseThaiDate(eDate).sortKey;
       });
 
-      // KPI & Summary Calculations
+      const isSingleDay = (sDate === eDate) || (inRangeDates.length === 1);
+      const dateTitle = isSingleDay
+        ? formatThaiDateDisplay(sDate)
+        : `${formatThaiDateDisplay(sDate, true)} - ${formatThaiDateDisplay(eDate, true)}`;
+
+      // Update Header Badges
+      document.getElementById('headerDateLabel').innerText = isSingleDay ? 'วันที่' : 'ช่วงวันที่';
+      document.getElementById('headerDateDisplay').innerText = dateTitle;
+      document.getElementById('chartTitle').innerText = `แนวโน้มระดับบ่อ EQ (${dateTitle})`;
+      document.getElementById('chartSubtitle').innerText = `แสดงระดับความสูงตามเวลาที่บันทึก (${isSingleDay ? 'รายชั่วโมง' : 'สะสมตามช่วงวันที่'})`;
+
+      // Legend setup
+      const legendContainer = document.getElementById('chartLegendContainer');
+      legendContainer.innerHTML = `
+        <div class="flex items-center gap-2 bg-[#061b36] px-3 py-1 rounded-full border border-sky-400/40 text-cyan-300 font-bold">
+          <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span>
+          <span>ระดับบ่อ EQ (${selectedUnit === 'percent' ? '%' : 'm'})</span>
+        </div>
+      `;
+
+      // Build data points
+      const allPoints = [];
+      inRangeDates.forEach(d => {
+        const dayEntries = getFilteredEntriesForDate(d, selectedStartTime, selectedEndTime);
+        dayEntries.forEach(item => {
+          const val = selectedUnit === 'percent' ? item.percent : item.meter;
+          allPoints.push({
+            date: d,
+            time: item.time,
+            label: isSingleDay ? item.time : `${formatThaiDateDisplay(d, true)} ${item.time}`,
+            value: val
+          });
+        });
+      });
+
+      const validPoints = allPoints.filter(p => p.value !== null && !isNaN(p.value));
+
+      // Update KPIs & Summary for Range Mode
+      document.getElementById('kpi1Title').innerText = 'ระดับบ่อ EQ ล่าสุด';
+      document.getElementById('kpi3Title').innerText = isSingleDay ? 'ช่วงเวลาติดตาม' : 'ช่วงวันที่ติดตาม';
+
       if (validPoints.length > 0) {
         const firstPoint = validPoints[0];
         const lastPoint = validPoints[validPoints.length - 1];
-
-        const firstVal = selectedUnit === 'percent' ? firstPoint.percent : firstPoint.meter;
-        const lastVal = selectedUnit === 'percent' ? lastPoint.percent : lastPoint.meter;
-
-        const change = firstVal - lastVal; // positive means decreased
+        const firstVal = firstPoint.value;
+        const lastVal = lastPoint.value;
+        const change = firstVal - lastVal; // positive = decreased
         const absChange = Math.abs(change);
 
-        // KPI 1: ระดับบ่อ EQ ล่าสุด
+        // KPI 1: ระดับล่าสุด
         document.getElementById('kpiLatestVal').innerText = `${lastVal.toFixed(2)}${unitSymbol}`;
-        document.getElementById('kpiLatestTimeBadge').innerText = `(เวลา ${lastPoint.time} น.)`;
+        document.getElementById('kpiLatestTimeBadge').innerText = `(${lastPoint.label} น.)`;
 
-        // KPI 2: ลดลง / เพิ่มขึ้น จากเวลาแรก
-        document.getElementById('kpiChangeLabel').innerText = `${change >= 0 ? 'ลดลง' : 'เพิ่มขึ้น'}จากเวลา ${firstPoint.time} น.`;
+        // KPI 2: การเปลี่ยนแปลง
+        document.getElementById('kpiChangeLabel').innerText = `${change >= 0 ? 'ลดลง' : 'เพิ่มขึ้น'}จาก ${firstPoint.label} น.`;
         document.getElementById('kpiChangeVal').innerText = absChange.toFixed(2);
         document.getElementById('kpiChangeUnitBadge').innerText = unitLabel;
-        
+
         const arrowEl = document.getElementById('kpiChangeArrow');
         const tagEl = document.getElementById('kpiChangeTag');
         if (change > 0) {
@@ -1120,24 +1378,33 @@
           tagEl.className = 'text-sky-200 font-bold bg-sky-950/90 px-2 py-0.5 rounded border border-sky-400/30';
         }
 
-        // KPI 3: ช่วงเวลาติดตาม
-        document.getElementById('kpiPeriodVal').innerText = `${firstPoint.time} - ${lastPoint.time} น.`;
-        
-        const [h1, m1] = firstPoint.time.split(':').map(Number);
-        const [h2, m2] = lastPoint.time.split(':').map(Number);
-        let hoursDiff = (h2 + m2/60) - (h1 + m1/60);
-        if (hoursDiff < 0) hoursDiff += 24;
-        const displayHours = hoursDiff === 0 ? validPoints.length : hoursDiff;
-        document.getElementById('kpiHoursVal').innerText = `(${displayHours.toFixed(displayHours % 1 === 0 ? 0 : 1)} ชม.)`;
-        document.getElementById('kpiPointsCount').innerText = `บันทึก ${validPoints.length} จุด`;
+        // KPI 3: ช่วงเวลา/ช่วงวัน
+        document.getElementById('kpiPeriodVal').innerText = isSingleDay 
+          ? `${firstPoint.time} - ${lastPoint.time} น.` 
+          : `${inRangeDates.length} วัน (${validPoints.length} จุด)`;
+        document.getElementById('kpiHoursVal').innerText = isSingleDay 
+          ? `(${validPoints.length} จุดบันทึก)` 
+          : `(${formatThaiDateDisplay(sDate, true)} ถึง ${formatThaiDateDisplay(eDate, true)})`;
+        document.getElementById('kpiPointsCount').innerText = `ข้อมูลครบถ้วน`;
 
-        // KPI 4: อัตราการเปลี่ยนแปลงเฉลี่ย
-        const ratePerHour = hoursDiff > 0 ? (absChange / hoursDiff) : 0;
+        // KPI 4: อัตราเฉลี่ย
+        let hoursSpan = 1;
+        if (isSingleDay) {
+          const [h1, m1] = firstPoint.time.split(':').map(Number);
+          const [h2, m2] = lastPoint.time.split(':').map(Number);
+          let diff = (h2 + m2/60) - (h1 + m1/60);
+          if (diff < 0) diff += 24;
+          hoursSpan = diff > 0 ? diff : validPoints.length;
+        } else {
+          hoursSpan = inRangeDates.length * 24;
+        }
+
+        const rate = absChange / (hoursSpan || 1);
         document.getElementById('kpiRateLabel').innerText = `อัตราการ${change >= 0 ? 'ลดลง' : 'เพิ่มขึ้น'}เฉลี่ย`;
-        document.getElementById('kpiRateVal').innerText = ratePerHour.toFixed(2);
-        document.getElementById('kpiRateUnitBadge').innerText = `${unitLabel}/ชั่วโมง`;
+        document.getElementById('kpiRateVal').innerText = rate.toFixed(2);
+        document.getElementById('kpiRateUnitBadge').innerText = `${unitLabel}/${isSingleDay ? 'ชั่วโมง' : 'ชม.เฉลี่ย'}`;
 
-        // Card สรุปภาพรวม
+        // Summary Card
         const headlineEl = document.getElementById('summaryHeadline');
         const trendIconEl = document.getElementById('summaryTrendIcon');
         if (change > 0) {
@@ -1155,47 +1422,185 @@
         }
 
         document.getElementById('summaryFromTo').innerText = `จาก ${firstVal.toFixed(2)}${unitSymbol} → ${lastVal.toFixed(2)}${unitSymbol}`;
-        document.getElementById('summaryDiffDetail').innerText = `${change >= 0 ? 'ลดลง' : 'เพิ่มขึ้น'}รวม ${absChange.toFixed(2)} ${unitLabel} ภายใน ${displayHours.toFixed(displayHours % 1 === 0 ? 0 : 1)} ชั่วโมง`;
+        document.getElementById('summaryDiffDetail').innerText = `${change >= 0 ? 'ลดลง' : 'เพิ่มขึ้น'}รวม ${absChange.toFixed(2)} ${unitLabel} (${validPoints.length} จุดข้อมูล)`;
+        document.getElementById('summaryStat1Label').innerText = 'ค่าเริ่มต้น';
+        document.getElementById('summaryStat2Label').innerText = 'ค่าสิ้นสุด';
         document.getElementById('summaryStartVal').innerText = `${firstVal.toFixed(2)}${unitSymbol}`;
         document.getElementById('summaryEndVal').innerText = `${lastVal.toFixed(2)}${unitSymbol}`;
 
-        const allVals = validPoints.map(p => selectedUnit === 'percent' ? p.percent : p.meter);
-        const maxVal = Math.max(...allVals);
-        const minVal = Math.min(...allVals);
+        const vals = validPoints.map(p => p.value);
+        const maxVal = Math.max(...vals);
+        const minVal = Math.min(...vals);
         document.getElementById('chartMinMaxSummary').innerText = `สูงสุด: ${maxVal.toFixed(2)}${unitSymbol} | ต่ำสุด: ${minVal.toFixed(2)}${unitSymbol}`;
 
       } else {
-        document.getElementById('kpiLatestVal').innerText = `-`;
-        document.getElementById('kpiLatestTimeBadge').innerText = `(ไม่มีข้อมูล)`;
-        document.getElementById('kpiChangeVal').innerText = `-`;
-        document.getElementById('kpiPeriodVal').innerText = `ไม่มีข้อมูล`;
-        document.getElementById('kpiRateVal').innerText = `-`;
-        document.getElementById('summaryHeadline').innerText = '“ยังไม่มีการบันทึกข้อมูลในช่วงเวลานี้”';
-        document.getElementById('summaryFromTo').innerText = `-`;
-        document.getElementById('summaryDiffDetail').innerText = `กรุณาเลือกช่วงเวลาอื่น หรือรอการบันทึกใน Google Sheet`;
-        document.getElementById('chartMinMaxSummary').innerText = `สูงสุด: - | ต่ำสุด: -`;
+        setEmptyKpiState();
       }
 
-      renderChart(filteredList);
-      renderDataTable(fullList);
-      loadDailyNote();
+      // Render Single Dataset Chart (Line or Bar)
+      renderSingleDatasetChart(allPoints);
+
+      // Render Table
+      renderDataTable(allPoints, isSingleDay);
     }
 
-    // Chart.js Rendering for Navy Theme
-    function renderChart(items) {
+    // ================= RENDER MODE 2: COMPARISON MODE (Requirement 3) =================
+    function renderComparisonMode() {
+      compareDate1 = document.getElementById('compareDate1Select').value || compareDate1;
+      compareDate2 = document.getElementById('compareDate2Select').value || compareDate2;
+      compareStartTime1 = document.getElementById('compareStartTime1Select').value;
+      compareEndTime1 = document.getElementById('compareEndTime1Select').value;
+      compareStartTime2 = document.getElementById('compareStartTime2Select').value;
+      compareEndTime2 = document.getElementById('compareEndTime2Select').value;
+
+      const unitSymbol = selectedUnit === 'percent' ? '%' : ' m';
+      const unitLabel = selectedUnit === 'percent' ? 'จุดเปอร์เซ็นต์' : 'เมตร';
+
+      const d1Label = formatThaiDateDisplay(compareDate1);
+      const d2Label = formatThaiDateDisplay(compareDate2);
+
+      // Header Badges
+      document.getElementById('headerDateLabel').innerText = 'โหมดเปรียบเทียบ';
+      document.getElementById('headerDateDisplay').innerText = `${formatThaiDateDisplay(compareDate1, true)} vs ${formatThaiDateDisplay(compareDate2, true)}`;
+      document.getElementById('chartTitle').innerText = `กราฟเปรียบเทียบระดับบ่อ EQ ระหว่าง 2 วัน`;
+      document.getElementById('chartSubtitle').innerText = `ชุดที่ 1 (${d1Label}) เปรียบเทียบกับ ชุดที่ 2 (${d2Label}) เรียงตามเวลา`;
+
+      // Legend setup
+      const legendContainer = document.getElementById('chartLegendContainer');
+      legendContainer.innerHTML = `
+        <div class="flex items-center gap-2 bg-[#061b36] px-3.5 py-1.5 rounded-full border border-cyan-400/40 text-cyan-300 font-bold">
+          <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span>
+          <span>ชุดที่ 1: ${d1Label} (${selectedUnit === 'percent' ? '%' : 'm'})</span>
+        </div>
+        <div class="flex items-center gap-2 bg-[#061b36] px-3.5 py-1.5 rounded-full border border-amber-400/40 text-amber-300 font-bold">
+          <span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span>
+          <span>ชุดที่ 2: ${d2Label} (${selectedUnit === 'percent' ? '%' : 'm'})</span>
+        </div>
+      `;
+
+      // Get records for Dataset 1 and Dataset 2
+      const entries1 = getFilteredEntriesForDate(compareDate1, compareStartTime1, compareEndTime1);
+      const entries2 = getFilteredEntriesForDate(compareDate2, compareStartTime2, compareEndTime2);
+
+      // Collect all unique times
+      const allTimesSet = new Set();
+      entries1.forEach(e => allTimesSet.add(e.time));
+      entries2.forEach(e => allTimesSet.add(e.time));
+      const times = Array.from(allTimesSet).sort();
+
+      const map1 = {};
+      entries1.forEach(e => { map1[e.time] = selectedUnit === 'percent' ? e.percent : e.meter; });
+      const map2 = {};
+      entries2.forEach(e => { map2[e.time] = selectedUnit === 'percent' ? e.percent : e.meter; });
+
+      const data1 = times.map(t => (map1[t] !== undefined ? map1[t] : null));
+      const data2 = times.map(t => (map2[t] !== undefined ? map2[t] : null));
+
+      const valid1 = data1.filter(v => v !== null && !isNaN(v));
+      const valid2 = data2.filter(v => v !== null && !isNaN(v));
+
+      // Calculate Comparison KPIs
+      document.getElementById('kpi1Title').innerText = `ชุดที่ 1 ล่าสุด (${formatThaiDateDisplay(compareDate1, true)})`;
+      document.getElementById('kpi3Title').innerText = `ชุดที่ 2 ล่าสุด (${formatThaiDateDisplay(compareDate2, true)})`;
+
+      const last1 = valid1.length > 0 ? valid1[valid1.length - 1] : null;
+      const last2 = valid2.length > 0 ? valid2[valid2.length - 1] : null;
+
+      document.getElementById('kpiLatestVal').innerText = last1 !== null ? `${last1.toFixed(2)}${unitSymbol}` : '-';
+      document.getElementById('kpiLatestTimeBadge').innerText = last1 !== null ? `(มี ${valid1.length} จุดบันทึก)` : '(ไม่มีข้อมูล)';
+
+      document.getElementById('kpiPeriodVal').innerText = last2 !== null ? `${last2.toFixed(2)}${unitSymbol}` : '-';
+      document.getElementById('kpiHoursVal').innerText = last2 !== null ? `(มี ${valid2.length} จุดบันทึก)` : '(ไม่มีข้อมูล)';
+      document.getElementById('kpiPointsCount').innerText = `เปรียบเทียบเวลาเดียวกัน`;
+
+      // Difference between Dataset 1 and Dataset 2
+      if (last1 !== null && last2 !== null) {
+        const diffLatest = last1 - last2;
+        const absDiff = Math.abs(diffLatest);
+
+        document.getElementById('kpiChangeLabel').innerText = `ผลต่างชุดที่ 1 vs ชุดที่ 2`;
+        document.getElementById('kpiChangeVal').innerText = absDiff.toFixed(2);
+        document.getElementById('kpiChangeUnitBadge').innerText = unitLabel;
+
+        const arrowEl = document.getElementById('kpiChangeArrow');
+        const tagEl = document.getElementById('kpiChangeTag');
+        if (diffLatest > 0) {
+          arrowEl.innerHTML = '<i class="fa-solid fa-arrow-up text-cyan-400"></i>';
+          tagEl.innerText = 'ชุดที่ 1 สูงกว่า';
+          tagEl.className = 'text-cyan-300 font-bold bg-sky-950/90 px-2 py-0.5 rounded border border-cyan-400/30';
+        } else if (diffLatest < 0) {
+          arrowEl.innerHTML = '<i class="fa-solid fa-arrow-down text-amber-400"></i>';
+          tagEl.innerText = 'ชุดที่ 2 สูงกว่า';
+          tagEl.className = 'text-amber-300 font-bold bg-amber-950/90 px-2 py-0.5 rounded border border-amber-400/30';
+        } else {
+          arrowEl.innerHTML = '<i class="fa-solid fa-minus text-sky-200"></i>';
+          tagEl.innerText = 'ระดับเท่ากัน';
+          tagEl.className = 'text-sky-200 font-bold bg-sky-950/90 px-2 py-0.5 rounded border border-sky-400/30';
+        }
+
+        // Average comparison
+        const avg1 = valid1.reduce((a, b) => a + b, 0) / valid1.length;
+        const avg2 = valid2.reduce((a, b) => a + b, 0) / valid2.length;
+        const avgDiff = Math.abs(avg1 - avg2);
+
+        document.getElementById('kpiRateLabel').innerText = 'ผลต่างค่าเฉลี่ยทั้งชุด';
+        document.getElementById('kpiRateVal').innerText = avgDiff.toFixed(2);
+        document.getElementById('kpiRateUnitBadge').innerText = unitLabel;
+
+        // Summary Card
+        const headlineEl = document.getElementById('summaryHeadline');
+        const trendIconEl = document.getElementById('summaryTrendIcon');
+        headlineEl.innerText = `“เปรียบเทียบระดับน้ำวันที่ ${formatThaiDateDisplay(compareDate1, true)} กับ ${formatThaiDateDisplay(compareDate2, true)}”`;
+        trendIconEl.className = 'w-14 h-14 rounded-2xl bg-sky-950/80 text-cyan-300 flex items-center justify-center text-3xl shadow-sm border border-cyan-500/40 flex-shrink-0';
+        trendIconEl.innerHTML = '<i class="fa-solid fa-code-compare"></i>';
+
+        document.getElementById('summaryFromTo').innerText = `เฉลี่ย: ${avg1.toFixed(2)}${unitSymbol} vs ${avg2.toFixed(2)}${unitSymbol}`;
+        document.getElementById('summaryDiffDetail').innerText = `${avg1 >= avg2 ? 'ชุดที่ 1 เฉลี่ยสูงกว่า' : 'ชุดที่ 2 เฉลี่ยสูงกว่า'} ${avgDiff.toFixed(2)} ${unitLabel}`;
+
+        document.getElementById('summaryStat1Label').innerText = `ชุดที่ 1 (${formatThaiDateDisplay(compareDate1, true)})`;
+        document.getElementById('summaryStat2Label').innerText = `ชุดที่ 2 (${formatThaiDateDisplay(compareDate2, true)})`;
+        document.getElementById('summaryStartVal').innerText = `${last1.toFixed(2)}${unitSymbol}`;
+        document.getElementById('summaryEndVal').innerText = `${last2.toFixed(2)}${unitSymbol}`;
+
+        const allValid = [...valid1, ...valid2];
+        const maxVal = Math.max(...allValid);
+        const minVal = Math.min(...allValid);
+        document.getElementById('chartMinMaxSummary').innerText = `สูงสุดรวม: ${maxVal.toFixed(2)}${unitSymbol} | ต่ำสุดรวม: ${minVal.toFixed(2)}${unitSymbol}`;
+
+      } else {
+        setEmptyKpiState();
+      }
+
+      // Render 2-Dataset Chart (Line or Grouped Bar)
+      renderComparisonChart(times, data1, data2, d1Label, d2Label);
+
+      // Render Comparison Data Table
+      renderComparisonTable(times, map1, map2, d1Label, d2Label);
+    }
+
+    function setEmptyKpiState() {
+      document.getElementById('kpiLatestVal').innerText = `-`;
+      document.getElementById('kpiLatestTimeBadge').innerText = `(ไม่มีข้อมูล)`;
+      document.getElementById('kpiChangeVal').innerText = `-`;
+      document.getElementById('kpiPeriodVal').innerText = `ไม่มีข้อมูล`;
+      document.getElementById('kpiRateVal').innerText = `-`;
+      document.getElementById('summaryHeadline').innerText = '“ยังไม่มีการบันทึกข้อมูลในช่วงเวลานี้”';
+      document.getElementById('summaryFromTo').innerText = `-`;
+      document.getElementById('summaryDiffDetail').innerText = `กรุณาเลือกช่วงเวลาอื่น หรือรอการบันทึกใน Google Sheet`;
+      document.getElementById('chartMinMaxSummary').innerText = `สูงสุด: - | ต่ำสุด: -`;
+    }
+
+    // ================= CHART RENDERING =================
+    // Single Dataset Chart (Line / Bar)
+    function renderSingleDatasetChart(items) {
       const ctx = document.getElementById('eqLevelChart').getContext('2d');
       const unitSymbol = selectedUnit === 'percent' ? '%' : ' m';
 
-      const activeItems = items.filter(e => {
-        const val = selectedUnit === 'percent' ? e.percent : e.meter;
-        return val !== null;
-      });
-
+      const activeItems = items.filter(e => e.value !== null);
       const displayItems = activeItems.length > 0 ? activeItems : items;
-      const labels = displayItems.map(e => e.time);
-      const dataPoints = displayItems.map(e => selectedUnit === 'percent' ? e.percent : e.meter);
+      const labels = displayItems.map(e => e.label);
+      const dataPoints = displayItems.map(e => e.value);
 
-      // Cyan-blue gradient on dark navy
       const gradient = ctx.createLinearGradient(0, 0, 0, 380);
       gradient.addColorStop(0, 'rgba(56, 189, 248, 0.45)');
       gradient.addColorStop(0.65, 'rgba(56, 189, 248, 0.12)');
@@ -1212,154 +1617,244 @@
         yMax = Math.ceil((maxVal + padding) * 2) / 2;
       }
 
-      if (chartInstance) {
-        chartInstance.destroy();
-      }
-
+      if (chartInstance) chartInstance.destroy();
       Chart.register(ChartDataLabels);
 
+      const datasetConfig = {
+        label: `ระดับบ่อ EQ`,
+        data: dataPoints,
+        borderColor: '#38bdf8',
+        backgroundColor: chartType === 'line' ? gradient : 'rgba(56, 189, 248, 0.85)',
+        borderWidth: chartType === 'line' ? 3.5 : 1,
+        borderRadius: chartType === 'bar' ? 6 : 0,
+        fill: chartType === 'line',
+        tension: 0.2,
+        pointBackgroundColor: '#38bdf8',
+        pointBorderColor: '#ffffff',
+        pointBorderWidth: 2.5,
+        pointRadius: chartType === 'line' ? 6 : 0,
+        pointHoverRadius: 9,
+        spanGaps: true
+      };
+
       chartInstance = new Chart(ctx, {
-        type: 'line',
+        type: chartType,
         data: {
           labels: labels,
-          datasets: [{
-            label: `ระดับบ่อ EQ`,
-            data: dataPoints,
-            borderColor: '#38bdf8', // Bright glowing cyan
-            backgroundColor: gradient,
-            borderWidth: 3.5,
-            fill: true,
-            tension: 0.2,
-            pointBackgroundColor: '#38bdf8',
-            pointBorderColor: '#ffffff',
-            pointBorderWidth: 2.5,
-            pointRadius: 6,
-            pointHoverRadius: 9,
-            pointHoverBackgroundColor: '#0284c7',
-            pointHoverBorderColor: '#ffffff',
-            pointHoverBorderWidth: 3,
-            spanGaps: true
-          }]
+          datasets: [datasetConfig]
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          layout: {
-            padding: {
-              top: 36,
-              right: 30,
-              bottom: 10,
-              left: 10
-            }
-          },
-          interaction: {
-            mode: 'index',
-            intersect: false,
-          },
-          plugins: {
-            legend: {
-              display: false
-            },
-            tooltip: {
-              backgroundColor: 'rgba(5, 19, 38, 0.95)',
-              titleFont: { family: 'Prompt', size: 13, weight: 'bold' },
-              bodyFont: { family: 'Prompt', size: 12 },
-              padding: 12,
-              cornerRadius: 10,
-              borderColor: 'rgba(56, 189, 248, 0.4)',
-              borderWidth: 1,
-              callbacks: {
-                label: function(context) {
-                  return `ระดับบ่อ EQ: ${context.parsed.y !== null ? context.parsed.y.toFixed(2) : '-'} ${unitSymbol}`;
-                }
-              }
-            },
-            datalabels: {
-              display: function(context) {
-                return context.dataset.data[context.dataIndex] !== null;
-              },
-              align: 'top',
-              offset: 8,
-              borderRadius: 6,
-              backgroundColor: '#0284c7',
-              borderColor: '#38bdf8',
-              borderWidth: 1,
-              color: '#ffffff',
-              font: {
-                family: 'Prompt',
-                weight: 'bold',
-                size: 11
-              },
-              padding: {
-                top: 4,
-                bottom: 4,
-                left: 8,
-                right: 8
-              },
-              formatter: function(value) {
-                return value !== null ? `${value.toFixed(2)}${unitSymbol}` : '';
-              }
-            }
-          },
-          scales: {
-            x: {
-              title: {
-                display: true,
-                text: 'เวลา',
-                font: { family: 'Prompt', size: 13, weight: '700' },
-                color: '#ffffff' // White text
-              },
-              grid: {
-                color: 'rgba(255, 255, 255, 0.1)',
-                drawBorder: false
-              },
-              ticks: {
-                font: { family: 'Prompt', size: 12, weight: '600' },
-                color: '#e2e8f0' // Bright white/slate
-              }
-            },
-            y: {
-              min: yMin,
-              max: yMax,
-              title: {
-                display: true,
-                text: `ระดับบ่อ EQ (${selectedUnit === 'percent' ? '%' : 'm'})`,
-                font: { family: 'Prompt', size: 13, weight: '700' },
-                color: '#ffffff' // White text
-              },
-              grid: {
-                color: 'rgba(255, 255, 255, 0.1)',
-                drawBorder: false
-              },
-              ticks: {
-                font: { family: 'Prompt', size: 11, weight: '500' },
-                color: '#e2e8f0', // Bright white/slate
-                callback: function(value) {
-                  return value.toFixed(1);
-                }
-              }
-            }
-          }
-        }
+        options: getChartOptions(yMin, yMax, unitSymbol)
       });
     }
 
-    // Raw Data Table (Navy Theme)
-    function renderDataTable(list) {
+    // Comparison Chart: 2 Datasets (Line / Grouped Bar)
+    function renderComparisonChart(times, data1, data2, label1, label2) {
+      const ctx = document.getElementById('eqLevelChart').getContext('2d');
+      const unitSymbol = selectedUnit === 'percent' ? '%' : ' m';
+
+      const allValid = [...data1, ...data2].filter(v => v !== null && !isNaN(v));
+      let yMin = 86;
+      let yMax = 91;
+      if (allValid.length > 0) {
+        const minVal = Math.min(...allValid);
+        const maxVal = Math.max(...allValid);
+        const padding = Math.max((maxVal - minVal) * 0.35, selectedUnit === 'percent' ? 0.6 : 0.2);
+        yMin = Math.floor((minVal - padding) * 2) / 2;
+        yMax = Math.ceil((maxVal + padding) * 2) / 2;
+      }
+
+      if (chartInstance) chartInstance.destroy();
+      Chart.register(ChartDataLabels);
+
+      const grad1 = ctx.createLinearGradient(0, 0, 0, 380);
+      grad1.addColorStop(0, 'rgba(56, 189, 248, 0.4)');
+      grad1.addColorStop(1, 'rgba(56, 189, 248, 0.01)');
+
+      const grad2 = ctx.createLinearGradient(0, 0, 0, 380);
+      grad2.addColorStop(0, 'rgba(245, 158, 11, 0.4)');
+      grad2.addColorStop(1, 'rgba(245, 158, 11, 0.01)');
+
+      chartInstance = new Chart(ctx, {
+        type: chartType,
+        data: {
+          labels: times,
+          datasets: [
+            {
+              label: `ชุดที่ 1 (${label1})`,
+              data: data1,
+              borderColor: '#38bdf8', // Cyan
+              backgroundColor: chartType === 'line' ? grad1 : 'rgba(56, 189, 248, 0.85)',
+              borderWidth: chartType === 'line' ? 3.5 : 1,
+              borderRadius: chartType === 'bar' ? 6 : 0,
+              fill: chartType === 'line',
+              tension: 0.2,
+              pointBackgroundColor: '#38bdf8',
+              pointBorderColor: '#ffffff',
+              pointBorderWidth: 2,
+              pointRadius: chartType === 'line' ? 5 : 0,
+              spanGaps: true
+            },
+            {
+              label: `ชุดที่ 2 (${label2})`,
+              data: data2,
+              borderColor: '#f59e0b', // Amber / Gold
+              backgroundColor: chartType === 'line' ? grad2 : 'rgba(245, 158, 11, 0.85)',
+              borderWidth: chartType === 'line' ? 3.5 : 1,
+              borderRadius: chartType === 'bar' ? 6 : 0,
+              fill: chartType === 'line',
+              tension: 0.2,
+              pointBackgroundColor: '#f59e0b',
+              pointBorderColor: '#ffffff',
+              pointBorderWidth: 2,
+              pointRadius: chartType === 'line' ? 5 : 0,
+              spanGaps: true
+            }
+          ]
+        },
+        options: getChartOptions(yMin, yMax, unitSymbol)
+      });
+    }
+
+    function getChartOptions(yMin, yMax, unitSymbol) {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: {
+          padding: { top: 36, right: 25, bottom: 10, left: 10 }
+        },
+        interaction: {
+          mode: 'index',
+          intersect: false
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: 'rgba(5, 19, 38, 0.95)',
+            titleFont: { family: 'Prompt', size: 13, weight: 'bold' },
+            bodyFont: { family: 'Prompt', size: 12 },
+            padding: 12,
+            cornerRadius: 10,
+            borderColor: 'rgba(56, 189, 248, 0.4)',
+            borderWidth: 1,
+            callbacks: {
+              label: function(context) {
+                const label = context.dataset.label || '';
+                const val = context.parsed.y !== null ? context.parsed.y.toFixed(2) : '-';
+                return `${label}: ${val} ${unitSymbol}`;
+              }
+            }
+          },
+          datalabels: {
+            display: function(context) {
+              return context.dataset.data[context.dataIndex] !== null;
+            },
+            align: 'top',
+            offset: 6,
+            borderRadius: 6,
+            backgroundColor: function(context) {
+              return context.dataset.borderColor || '#0284c7';
+            },
+            color: '#ffffff',
+            font: { family: 'Prompt', weight: 'bold', size: 10 },
+            padding: { top: 3, bottom: 3, left: 6, right: 6 },
+            formatter: function(value) {
+              return value !== null ? `${value.toFixed(2)}${unitSymbol}` : '';
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'เวลา (น.)',
+              font: { family: 'Prompt', size: 13, weight: '700' },
+              color: '#ffffff'
+            },
+            grid: { color: 'rgba(255, 255, 255, 0.1)', drawBorder: false },
+            ticks: {
+              font: { family: 'Prompt', size: 11, weight: '600' },
+              color: '#e2e8f0'
+            }
+          },
+          y: {
+            min: yMin,
+            max: yMax,
+            title: {
+              display: true,
+              text: `ระดับบ่อ EQ (${selectedUnit === 'percent' ? '%' : 'm'})`,
+              font: { family: 'Prompt', size: 13, weight: '700' },
+              color: '#ffffff'
+            },
+            grid: { color: 'rgba(255, 255, 255, 0.1)', drawBorder: false },
+            ticks: {
+              font: { family: 'Prompt', size: 11, weight: '500' },
+              color: '#e2e8f0',
+              callback: function(value) { return value.toFixed(1); }
+            }
+          }
+        }
+      };
+    }
+
+    // ================= TABLE RENDERING =================
+    function renderDataTable(items, isSingleDay) {
+      const theadRow = document.getElementById('dataTableHeadRow');
+      theadRow.innerHTML = `
+        <th class="p-2.5 border border-sky-500/20">${isSingleDay ? 'เวลา' : 'วันที่และเวลา'}</th>
+        <th class="p-2.5 border border-sky-500/20">ระดับความสูง %</th>
+        <th class="p-2.5 border border-sky-500/20">ระดับความสูง m</th>
+        <th class="p-2.5 border border-sky-500/20">สถานะบันทึก</th>
+      `;
+
       const tbody = document.getElementById('dataTableBody');
       tbody.innerHTML = '';
-      list.forEach(item => {
+      items.forEach(item => {
         const tr = document.createElement('tr');
-        const hasVal = item.percent !== null || item.meter !== null;
+        const hasVal = item.value !== null;
         tr.className = hasVal ? 'bg-[#092243] hover:bg-[#0e3568] transition' : 'bg-[#061830] text-slate-400';
         tr.innerHTML = `
-          <td class="p-2.5 border border-sky-500/20 font-bold font-sans text-white">${item.time} น.</td>
-          <td class="p-2.5 border border-sky-500/20 font-sans font-bold text-cyan-300">${item.percent !== null ? item.percent.toFixed(2) + '%' : '-'}</td>
-          <td class="p-2.5 border border-sky-500/20 font-sans text-teal-300 font-semibold">${item.meter !== null ? item.meter.toFixed(2) + ' m' : '-'}</td>
+          <td class="p-2.5 border border-sky-500/20 font-bold font-sans text-white">${item.label} น.</td>
+          <td class="p-2.5 border border-sky-500/20 font-sans font-bold text-cyan-300">${selectedUnit === 'percent' && item.value !== null ? item.value.toFixed(2) + '%' : (item.value !== null ? item.value.toFixed(2) : '-')}</td>
+          <td class="p-2.5 border border-sky-500/20 font-sans text-teal-300 font-semibold">${selectedUnit === 'meter' && item.value !== null ? item.value.toFixed(2) + ' m' : '-'}</td>
           <td class="p-2.5 border border-sky-500/20">
             ${hasVal 
               ? '<span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">บันทึกแล้ว</span>'
               : '<span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] bg-slate-800 text-slate-400">รอข้อมูล</span>'}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderComparisonTable(times, map1, map2, label1, label2) {
+      const theadRow = document.getElementById('dataTableHeadRow');
+      theadRow.innerHTML = `
+        <th class="p-2.5 border border-sky-500/20">เวลา (น.)</th>
+        <th class="p-2.5 border border-sky-500/20 text-cyan-300">ชุดที่ 1 (${label1})</th>
+        <th class="p-2.5 border border-sky-500/20 text-amber-300">ชุดที่ 2 (${label2})</th>
+        <th class="p-2.5 border border-sky-500/20">ผลต่าง</th>
+      `;
+
+      const tbody = document.getElementById('dataTableBody');
+      tbody.innerHTML = '';
+      const unitSymbol = selectedUnit === 'percent' ? '%' : ' m';
+
+      times.forEach(t => {
+        const v1 = map1[t];
+        const v2 = map2[t];
+        const hasBoth = v1 !== undefined && v1 !== null && v2 !== undefined && v2 !== null;
+        const diff = hasBoth ? (v1 - v2) : null;
+
+        const tr = document.createElement('tr');
+        tr.className = (v1 !== null || v2 !== null) ? 'bg-[#092243] hover:bg-[#0e3568] transition' : 'bg-[#061830] text-slate-400';
+        tr.innerHTML = `
+          <td class="p-2.5 border border-sky-500/20 font-bold font-sans text-white">${t} น.</td>
+          <td class="p-2.5 border border-sky-500/20 font-sans font-bold text-cyan-300">${v1 !== null && v1 !== undefined ? v1.toFixed(2) + unitSymbol : '-'}</td>
+          <td class="p-2.5 border border-sky-500/20 font-sans font-bold text-amber-300">${v2 !== null && v2 !== undefined ? v2.toFixed(2) + unitSymbol : '-'}</td>
+          <td class="p-2.5 border border-sky-500/20 font-sans font-semibold">
+            ${diff !== null 
+              ? `<span class="${diff >= 0 ? 'text-cyan-300' : 'text-amber-300'}">${diff >= 0 ? '+' : ''}${diff.toFixed(2)} ${unitSymbol}</span>` 
+              : '-'}
           </td>
         `;
         tbody.appendChild(tr);
@@ -1393,7 +1888,7 @@
 
     function saveDailyNote() {
       const note = document.getElementById('dailyCustomNote').value.trim();
-      const key = `daily_note_${selectedDate}`;
+      const key = `daily_note_${selectedStartDate}`;
       if (note) {
         localStorage.setItem(key, note);
       } else {
@@ -1404,7 +1899,7 @@
     }
 
     function loadDailyNote() {
-      const key = `daily_note_${selectedDate}`;
+      const key = `daily_note_${selectedStartDate}`;
       const note = localStorage.getItem(key);
       const badge = document.getElementById('customNoteBadge');
       const text = document.getElementById('customNoteText');
